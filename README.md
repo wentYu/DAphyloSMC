@@ -6,20 +6,30 @@
 
 ## Description
 
-DAphyloSMC is a Python package that implements a three‑step analysis pipeline: first run `step1` (based on `a.py`), then `step2` (based on `b.py`), and finally `step3` (a second run of `a.py` with different parameters). You can either run the full workflow with one command or execute individual steps independently.
+In Bayesian phylogenetics, estimating the posterior distribution over tree space is computationally expensive due to repeated likelihood evaluations. **DAphyloSMC** is a Python package that implements a **delayed‑acceptance sequential Monte Carlo (DA‑SMC)** framework to accelerate phylogenetic inference.
+
+The package extracts over 35 topological and branch‑length features from tree proposals (e.g., eSPR, stNNI) and uses a random forest to predict the likelihood change. This surrogate enables a delayed‑acceptance MCMC kernel that pre‑filters costly likelihood evaluations, substantially reducing computational time while maintaining robust posterior estimates.
+
+DAphyloSMC seamlessly integrates this kernel into an SMC sampler, providing an efficient, off‑the‑shelf tool for Bayesian phylogenetics on large‑scale sequence data.
 
 ## Table of Contents
 
 - [Installation](#installation)
+- [Supported Platforms](#Supported-Platforms)
+- [System Dependencies](#System-Dependencies)
+- [Verification](#Verification)
+- [Preparing the data](#Preparing-the-data)
 - [Usage](#usage)
-  - [Full workflow](#full-workflow)
-  - [Individual steps](#individual-steps)
-  - [Command line options](#command-line-options)
+  - [Step 1: Pilot SMC (feature collection)](#Step-1-Pilot-SMC-feature-collection)
+  - [Step 2: Random Forest Training](#Step-2-Random-Forest-Training)
+  - [Step 3: Final DA-SMC run](#Step-3-Final-DA-SMC-run)
+  - [Common arguments for dasmc-run](#Common-arguments-for-dasmc-run)
+  - [Arguments for dasmc-train](#Arguments-for-dasmc-train)
 - [Dependencies](#dependencies)
 - [Included Modified Packages](#included-modified-packages)
 - [License](#license)
 - [Citation](#citation)
-
+- [Contact](#Contact)
 ## Installation
 
 [//]: # (You can install DASMC directly from PyPI:)
@@ -78,7 +88,7 @@ print("p4 module location:", p4.__file__)
 ```
 If you see no error messages and the output shows the path to p4 (inside your site-packages or development directory), the installation was successful.
 
-## Preparing the input data
+## Preparing the data
 
 DAphyloSMC requires input files in **Nexus format** (extension `.nex`). Place your `.nex` file(s) inside a subdirectory named `data/` under your current working directory. 
 
@@ -87,7 +97,7 @@ If you have cloned the DAphyloSMC GitHub repository, a sample dataset `primates.
 
 DAphyloSMC provides two command-line tools: `dasmc-run` (for SMC sampling) and `dasmc-train` (for training the random forest classifier). The typical workflow consists of three consecutive steps.
 
-### Step 1 – Pilot SMC (feature collection)
+### Step 1: Pilot SMC (feature collection)
 
 Run a small‑scale pilot SMC to collect features for training the random forest. The features are saved to `./pilot_output/`.
 
@@ -105,7 +115,7 @@ dasmc-run -f 1 -d primates -m test1 -n 50 -i 200 -g 0 -p 0.02
 - `-g 0` : Disable SYM/GTR model (0 = use JC69 or K2P, 1 = use SYM or GTR).  
 - `-p 0.02` : Proposal probability for evolution rate parameters. Setting this value >0 enables the K2P model (instead of JC69).
 
-### Step 2 – Train Random Forest
+### Step 2: Random Forest Training
 
 Train the random forest classifier using the collected features. The trained model is saved to `./RF_output/`.
 
@@ -115,7 +125,7 @@ dasmc-train -d primates -m test1
 ```
 **Important:** The `-d` and `-m` arguments must exactly match the ones used in the pilot run.
 
-### Step 3 – Final DA-SMC run
+### Step 3: Final DA-SMC run
 
 Run the full DA-SMC (delayed‑acceptance SMC) using the pre‑trained random forest model. The final results (posterior parameter sets, tree collections, consensus trees, etc.) are written to `./DASMC_output/`.
 
