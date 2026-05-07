@@ -1,3 +1,29 @@
+Metadata-Version: 2.1
+Name: DASMC
+Version: 0.1.0
+Summary: Wait for discription...
+Home-page: https://github.com/wentYu/DAphyloSMC
+Author: Wentao Yu, Shijia Wang
+Author-email: yuwt2024@shanghaitech.edu.cn
+License: GPL-3.0
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: Dendropy>=4.5.0
+Requires-Dist: ete3>=3.0.0
+Requires-Dist: joblib>=1.0.0
+Requires-Dist: matplotlib>=3.0.0
+Requires-Dist: numpy>=1.12.0
+Requires-Dist: pandas>=1.0.0
+Requires-Dist: psutil>=5.8.0
+Requires-Dist: scikit-learn>=0.24.0
+Requires-Dist: scipy>=1.5.0
+Requires-Dist: seaborn>=0.11.0
+Requires-Dist: sumt>=3.8.0
+
 # DAphyloSMC – Data Analysis Workflow for phylogenetic Bayesian Inference
 
 [//]: # ([![PyPI version]&#40;https://badge.fury.io/py/DASMC.svg&#41;]&#40;https://pypi.org/project/DASMC/&#41;)

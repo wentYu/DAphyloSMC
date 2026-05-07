@@ -1,0 +1,2 @@
+recursive-include DASMC/p4 *.so
+include DASMC/p4 LICENSE
