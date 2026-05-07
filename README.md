@@ -73,7 +73,7 @@ For **macOS** users with Homebrew:
 ```bash
 brew install gsl nlopt
 ```
-For other platforms or advanced setups (e.g., using Conda, or installing without `sudo`), please refer to the `p4` installation page linked above.
+For other platforms or advanced setups (., using Conda, or installing without `sudo`), please refer to the `p4` installation page linked above.
 
 After installing these system dependencies, you can use DAphyloSMC normally.
 
@@ -146,14 +146,14 @@ dasmc-run -d primates -m test1 -n 500 -g 0 -p 0.02 -s 1 -a 0.999
   If you use `-s` 1 (self‑adaptive annealing), the `-i` (number of iterations) parameter is not required and will be ignored – the iteration count is determined automatically. In that case, you can omit `-i` from the command.
 
   Oppositely, if `-s` is omitted, the program will use a fixed annealing schedule, and `-i` is required.
->**Note**: The model settings (e.g., -g and -p, etc.) must be identical between the pilot run and the final DA-SMC run for a given dataset. The dataset name (-d) and the identifier (-m) must also be consistent throughout the whole workflow.
+>**Note**: The model settings (., -g and -p, etc.) must be identical between the pilot run and the final DA-SMC run for a given dataset. The dataset name (-d) and the identifier (-m) must also be consistent throughout the whole workflow.
 
 ### Common arguments for `dasmc-run`
 
 | Argument                      | Description                                                                     | Default  |
 |-------------------------------|---------------------------------------------------------------------------------|----------|
 | `--feature`, `-f`             | Pilot run (1) or formal run (0).                                                | 0        |
-| `--dataset`, `-d`             | Base name (without `.nex` extension) of the input file. Can include a relative path, e.g., `examples/primates` for `examples/primates.nex`.).                          | (required) |
+| `--dataset`, `-d`             | Base name (without `.nex` extension) of the input file.                          | (required) |
 | `--mark`, `-m`                | Identifier for this set of works.                                               | (required) |
 | `--turn`, `-t`                | Which turn in the repeated run (if any).                                        | 0        |
 | `--random_seed`, `-r`         | Random seed (0 = use default seeds).                                            | 0        |
