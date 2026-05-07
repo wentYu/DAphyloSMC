@@ -146,7 +146,7 @@ dasmc-run -d primates -m test1 -n 500 -g 0 -p 0.02 -s 1 -a 0.999
   If you use `-s` 1 (self‑adaptive annealing), the `-i` (number of iterations) parameter is not required and will be ignored – the iteration count is determined automatically. In that case, you can omit `-i` from the command.
 
   Oppositely, if `-s` is omitted, the program will use a fixed annealing schedule, and `-i` is required.
->**Note**: The model settings (e.g., -g and -p) must be identical between the pilot run and the final DA-SMC run for a given dataset. The dataset name (-d) and the identifier (-m) must also be consistent throughout the whole workflow.
+>**Note**: The model settings (e.g., -g and -p, etc.) must be identical between the pilot run and the final DA-SMC run for a given dataset. The dataset name (-d) and the identifier (-m) must also be consistent throughout the whole workflow.
 
 ### Common arguments for `dasmc-run`
 
