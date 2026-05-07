@@ -208,7 +208,7 @@ This package includes a **modified version** of the `p4` library (original autho
 
 Modifications include:
 - Activated the eSPR move in the source code and fixed a bug about it.
-- Added the NNI move.
+- Added the stNNI move.
 - Added support for feature extraction of eSPR and NNI move.
 
 All original copyright notices and license terms are retained. A copy of the original license is included in `DASMC/p4/LICENSE`.
