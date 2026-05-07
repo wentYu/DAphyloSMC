@@ -73,7 +73,7 @@ To confirm that DAphyloSMC and its embedded `p4` module are properly installed, 
 import DASMC
 from DASMC import p4
 
-print("DASMC version:", DASMC.__version__)   # if you define __version__ in __init__.py
+print("DASMC version:", DASMC.__version__)
 print("p4 module location:", p4.__file__)
 ```
 If you see no error messages and the output shows the path to p4 (inside your site-packages or development directory), the installation was successful.
