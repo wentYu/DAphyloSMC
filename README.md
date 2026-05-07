@@ -12,6 +12,8 @@ The package extracts over 35 topological and branch‑length features from tree 
 
 DAphyloSMC seamlessly integrates this kernel into an SMC sampler, providing an efficient, off‑the‑shelf tool for Bayesian phylogenetics on large‑scale sequence data.
 
+[//]: # (For a detailed description of the methodology, including feature design, the delayed‑acceptance kernel, and validation results, please refer to our paper: [Your Citation or DOI] &#40;available at [journal URL or arXiv]&#41;.)
+
 ## Table of Contents
 
 - [Installation](#installation)
