@@ -1,3 +1,0 @@
-[console_scripts]
-dasmc-run = DASMC.SMC:main
-dasmc-train = DASMC.Train:main
