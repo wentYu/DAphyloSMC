@@ -233,7 +233,7 @@ The complete license text is available in the `LICENSE` file in the root directo
 
 If you use DAphyloSMC in your research, please cite:
 
-> W.Yu, S.Wang (2026). A delayed acceptance sequential Monte Carlo with random
+> W. Yu, S. Wang (2026). A delayed acceptance sequential Monte Carlo with random
 forests for Bayesian phylogenetic inference.
 
 ## Contact
