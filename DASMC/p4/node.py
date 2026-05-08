@@ -1,7 +1,7 @@
-import p4.func
-from p4.var import var
+import DASMC.p4.func
+from DASMC.p4.var import var
 import sys
-import p4.pf as pf
+import DASMC.p4.pf as pf
 
 
 class NodeBranchPart(object):
@@ -251,7 +251,7 @@ class Node(object):
                     allOnes = False
                     break
             if not allOnes:
-                children = p4.func.sortListOfObjectsOnAttribute(
+                children = DASMC.p4.func.sortListOfObjectsOnAttribute(
                     children, 'nLeaves')
                 if not biggerGroupsOnBottom:
                     children.reverse()

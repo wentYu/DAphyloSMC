@@ -1,12 +1,12 @@
 import string
-import p4.func
-from p4.var import var
-from p4.alignment import Alignment
-from p4.nexustoken import nextTok, nexusSkipPastNextSemiColon, nexusSkipPastBlockEnd, safeNextTok
-from p4.nexussets import NexusSets
-from p4.sequence import Sequence
-from p4.p4exceptions import P4Error
-from p4.tree import Tree
+import DASMC.p4.func
+from DASMC.p4.var import var
+from DASMC.p4.alignment import Alignment
+from DASMC.p4.nexustoken import nextTok, nexusSkipPastNextSemiColon, nexusSkipPastBlockEnd, safeNextTok
+from DASMC.p4.nexussets import NexusSets
+from DASMC.p4.sequence import Sequence
+from DASMC.p4.p4exceptions import P4Error
+from DASMC.p4.tree import Tree
 
 # Some definitions from the MadSwofMad Syst Biol Nexus format paper (MSM97).
 #
@@ -287,7 +287,7 @@ class Nexus:
                         tok = safeNextTok(flob)
                         if tok[0] == '[':
                             # print "xxyyx got comment: %s" % tok
-                            from p4.treepartitions import _getModelInfo
+                            from DASMC.p4.treepartitions import _getModelInfo
                             theModelInfo = _getModelInfo(tok)
                             if theModelInfo:
                                 # theModelInfo.check() returns
@@ -391,12 +391,12 @@ class Nexus:
         translationHash = {}
 
         while 1:
-            keyTok = p4.func.nexusUnquoteName(safeNextTok(flob, 'Nexus: readTranslateCommand'))
+            keyTok = DASMC.p4.func.nexusUnquoteName(safeNextTok(flob, 'Nexus: readTranslateCommand'))
             # print "x got keyTok '%s'" % keyTok
             if keyTok == None or keyTok == ';':
                 break
             valueTok = safeNextTok(flob, 'Nexus: readTranslateCommand')
-            valueTok = p4.func.nexusUnquoteName(valueTok)
+            valueTok = DASMC.p4.func.nexusUnquoteName(valueTok)
             # print "  got valueTok '%s'" % valueTok
 
             if valueTok == None or valueTok == ';':
@@ -1053,8 +1053,8 @@ class NexusData:
 
         tok = nextTok(flob)
         while tok and tok != ';':
-            theName = p4.func.nexusUnquoteName(tok)
-            if not p4.func.nexusCheckName(theName):
+            theName = DASMC.p4.func.nexusUnquoteName(tok)
+            if not DASMC.p4.func.nexusCheckName(theName):
                 gm.append("Bad nexus name '%s'" % theName)
                 raise P4Error(gm, 'nexus_badName')
             lowName = theName.lower()
@@ -1229,7 +1229,7 @@ class NexusData:
         for i in range(self.nTax):
             self.sequences.append([])
         var.nexus_getLineEndingsAsTokens = 1
-        tok = p4.func.nexusUnquoteName(nextTok(flob))
+        tok = DASMC.p4.func.nexusUnquoteName(nextTok(flob))
         # if dbug:
         #    if tok == '\n' or tok == '\r':
         #        print '%10s: %s' % ('firsttok', '\\n')
@@ -1270,14 +1270,14 @@ class NexusData:
                 if len(tokens) == 0:
                     # Its the first token, which would be the tax name.  Check
                     # it.
-                    if not p4.func.nexusCheckName(tok):
+                    if not DASMC.p4.func.nexusCheckName(tok):
                         gm.append(
                             "Problem with nexus name '%s': it does not appear to be nexus-compliant." % tok)
                         raise P4Error(gm, 'nexus_badName')
                 tokens.append(tok)
                 # if dbug:
                 #    print "       tokensLength is now %i" % len(tokens)
-            tok = p4.func.nexusUnquoteName(nextTok(flob))
+            tok = DASMC.p4.func.nexusUnquoteName(nextTok(flob))
         for i in range(self.nTax):
             self.sequences[i] = ''.join(self.sequences[i])
         var.nexus_getLineEndingsAsTokens = 0  # back to normal
@@ -1289,13 +1289,13 @@ class NexusData:
         else:
             gm = ['NexusData.readNonInterleaveMatrix()']
 
-        tok = p4.func.nexusUnquoteName(nextTok(flob))
+        tok = DASMC.p4.func.nexusUnquoteName(nextTok(flob))
         tokens = []
         tokensLen = 0
         counter = 0
         while tok != None and tok != ';':
             #print("readNonInterleaveMatrix().  Got tok %s" % tok)
-            if not p4.func.nexusCheckName(tok):
+            if not DASMC.p4.func.nexusCheckName(tok):
                 gm.append(
                     "Problem with nexus name '%s': it does not appear to be nexus-compliant." % tok)
                 raise P4Error(gm, 'nexus_badName')
@@ -1312,7 +1312,7 @@ class NexusData:
             #print("got taxname %s" % tok)
             # get sequence
             if self.nChar:
-                tok = p4.func.nexusUnquoteName(nextTok(flob))
+                tok = DASMC.p4.func.nexusUnquoteName(nextTok(flob))
             else:
                 tok = ''
             #print("got token: '%s'" % tok)
@@ -1324,14 +1324,14 @@ class NexusData:
                     tokens = []
                     tokensLen = 0
                     counter = counter + 1
-                    tok = p4.func.nexusUnquoteName(nextTok(flob))
+                    tok = DASMC.p4.func.nexusUnquoteName(nextTok(flob))
                     break
                 elif tokensLen > self.nChar:
                     gm.append("Sequence for taxon %s appears to be too long" % self.taxNames[counter])
                     gm.append("%s" % tokens)
                     raise P4Error(gm, 'nexus_badSequenceLength')
                 else:
-                    tok = p4.func.nexusUnquoteName(nextTok(flob))
+                    tok = DASMC.p4.func.nexusUnquoteName(nextTok(flob))
                     # print "got token: '%s'" % tok
                     if not tok:
                         gm.append("End of file reached while reading data.")

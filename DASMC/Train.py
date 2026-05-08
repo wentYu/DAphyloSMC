@@ -139,11 +139,11 @@ def main():
     os.makedirs('./RF_Output',exist_ok=True)
 
     try:
-        with open('./pilot_output/feature_' + dataset + '_' + mark+ '.txt',
+        with open('./pilot_output/features_' + dataset + '_' + mark+ '.txt',
                   'r') as f:
             lines = f.readlines()
     except Exception as e:
-        with open('feature_' + dataset + '_' + mark + '.txt', 'r') as f:
+        with open('features_' + dataset + '_' + mark + '.txt', 'r') as f:
             lines = f.readlines()
 
 

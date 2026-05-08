@@ -1,25 +1,25 @@
-from p4.sequence import Sequence
-from p4.sequencelist import SequenceList
-from p4.nexussets import NexusSets
-from p4.p4exceptions import P4Error
+from DASMC.p4.sequence import Sequence
+from DASMC.p4.sequencelist import SequenceList
+from DASMC.p4.nexussets import NexusSets
+from DASMC.p4.p4exceptions import P4Error
 import string
 import copy
 import os
 import math
-import p4.func
+import DASMC.p4.func
 import re
 import sys
 import random
-from p4.nexussets import CharSet
+from DASMC.p4.nexussets import CharSet
 import subprocess
-from p4.distancematrix import DistanceMatrix
-from p4.var import var
-from p4.part import Part
+from DASMC.p4.distancematrix import DistanceMatrix
+from DASMC.p4.var import var
+from DASMC.p4.part import Part
 import numpy
 import numpy.linalg
 import statistics
-from p4.geneticcode import GeneticCode
-import p4.pf as pf
+from DASMC.p4.geneticcode import GeneticCode
+import DASMC.p4.pf as pf
 
 longMessage1 = """
  You may want to do the alignment method 
@@ -832,7 +832,7 @@ class Alignment(SequenceList):
 
         a.checkLengthsAndTypes()
         if 0:
-            from p4.nexussets import NexusSets
+            from DASMC.p4.nexussets import NexusSets
             a.nexusSets = NexusSets()
             a.nexusSets.aligNChar = a.length
             a.nexusSets.setPredefinedCharSets(a)
@@ -2153,7 +2153,7 @@ class Alignment(SequenceList):
         """
 
         gm = ['Alignment.bluntEndLigate()']
-        from p4.alignment import Alignment
+        from DASMC.p4.alignment import Alignment
         if not isinstance(alig, Alignment):
             gm.append("Arg must be an Alignment instance")
             raise P4Error(gm)
@@ -2215,7 +2215,7 @@ class Alignment(SequenceList):
         """
 
         gm = ['Alignment.concatenate()']
-        from p4.alignment import Alignment
+        from DASMC.p4.alignment import Alignment
         if not isinstance(alig, Alignment):
             gm.append("Arg must be an Alignment instance")
             raise P4Error(gm)
@@ -2308,7 +2308,7 @@ class Alignment(SequenceList):
         sequences site by site as long as there are no gaps or
         ambiguities.  """
 
-        from p4.alignment import Alignment
+        from DASMC.p4.alignment import Alignment
         dbug = 0
         seqCount = len(self.sequences)
         newAlig = Alignment()
@@ -2861,7 +2861,7 @@ class Alignment(SequenceList):
             gm.append("Self should be a DNA alignment.")
             raise P4Error(gm)
         if not theProteinAlignment or \
-                not isinstance(theProteinAlignment, p4.alignment.Alignment) or \
+                not isinstance(theProteinAlignment, DASMC.p4.alignment.Alignment) or \
                 theProteinAlignment.dataType != 'protein':
             gm.append("Something wrong with theProteinAlignment")
             raise P4Error(gm)
@@ -3153,7 +3153,7 @@ class Alignment(SequenceList):
                           (protSeq.name, dnaSeq.name))
                 raise P4Error(gm)
 
-        from p4.alignment import Alignment
+        from DASMC.p4.alignment import Alignment
         a = Alignment()
         a.dataType = 'dna'
         a.symbols = 'acgt'
@@ -3752,10 +3752,10 @@ class Alignment(SequenceList):
         dof_R = dof2 - dof_S
         # print(f"{txNumA} {txNumB} got dof2 {dof2}, dof_S {dof_S}, and dof_R {dof_R}, QB {QB}, QS {QS}, QR {QR}")
 
-        PB = p4.func.chiSquaredProb(QB, dof2)
+        PB = DASMC.p4.func.chiSquaredProb(QB, dof2)
         if QS is not None:
-            PS = p4.func.chiSquaredProb(QS, dof_S)
-            PR = p4.func.chiSquaredProb(QR, dof_R)
+            PS = DASMC.p4.func.chiSquaredProb(QS, dof_S)
+            PR = DASMC.p4.func.chiSquaredProb(QR, dof_R)
         else:
             PS = None
             PR = None
@@ -4047,7 +4047,7 @@ class Alignment(SequenceList):
         Ts = numpy.dot(numpy.dot(firstBit, secondBit), firstBit) * self.nChar
         # print Ts
         df = (self.dim - 1) * (self.nTax - 1)
-        pval = p4.func.chiSquaredProb(Ts, df)
+        pval = DASMC.p4.func.chiSquaredProb(Ts, df)
         return Ts, df, pval
 
     def getMinmaxChiSqGroups(self, percent_cutoff=0.05, min_bins=2, max_bins=20,
@@ -4086,7 +4086,7 @@ class Alignment(SequenceList):
             gm.append('Sequence names will be truncated.  Fix it.')
             gm.append("You may want to use the 'renameForPhylip()' method.")
             raise P4Error(gm)
-        if not p4.func.which2("minmax-chisq"):
+        if not DASMC.p4.func.which2("minmax-chisq"):
             gm.append("minmax-chisq is not in your path")
             raise P4Error(gm)
         the_data = []
@@ -4158,7 +4158,7 @@ class Alignment(SequenceList):
         if self.dataType != "protein":
             gm.append("The data are not protein.")
             raise P4Error(gm)
-        if not p4.func.which2("ais"):
+        if not DASMC.p4.func.which2("ais"):
             gm.append("ais is not in your path")
             raise P4Error(gm)
         if not n_bins > 1 or not n_bins < 20:
@@ -4574,7 +4574,7 @@ class Alignment(SequenceList):
         for s in self.sequences:
             ret = None
             # returns 1,2 or 0, respectively
-            ret = p4.func.isDnaRnaOrProtein(s.sequence)
+            ret = DASMC.p4.func.isDnaRnaOrProtein(s.sequence)
             if ret == 1:
                 s.dataType = 'dna'
                 s.symbols = 'acgt'
@@ -4648,7 +4648,7 @@ class Alignment(SequenceList):
             theName = splitLine[0]
             if len(splitLine) > 1:
                 for aBit in splitLine[1:]:
-                    bBit = p4.func.stringZapWhitespaceAndDigits(aBit)
+                    bBit = DASMC.p4.func.stringZapWhitespaceAndDigits(aBit)
                     theSequenceBits.append(bBit)
                     seqLenSoFar += len(bBit)
             while seqLenSoFar < nChar:
@@ -4660,7 +4660,7 @@ class Alignment(SequenceList):
                         print("    Early termination")
                     return False
                 theSequenceBits.append(
-                    p4.func.stringZapWhitespaceAndDigits(aLine))
+                    DASMC.p4.func.stringZapWhitespaceAndDigits(aLine))
                 seqLenSoFar += len(theSequenceBits[-1])
 
             if seqLenSoFar != nChar:
@@ -4712,7 +4712,7 @@ class Alignment(SequenceList):
             s.seqLenSoFar = 0
             if len(splitLine) > 1:
                 for aBit in splitLine[1:]:
-                    bBit = p4.func.stringZapWhitespaceAndDigits(aBit)
+                    bBit = DASMC.p4.func.stringZapWhitespaceAndDigits(aBit)
                     s.theSequenceBits.append(bBit)
                     s.seqLenSoFar += len(bBit)
             # print "%15s %s" % (s.name, bBit)
@@ -4732,7 +4732,7 @@ class Alignment(SequenceList):
             except IndexError:
                 break
             # print "aLine a: %s" % aLine
-            segment = p4.func.stringZapWhitespaceAndDigits(aLine)
+            segment = DASMC.p4.func.stringZapWhitespaceAndDigits(aLine)
             if len(segment):
                 self.sequences[seqNum].theSequenceBits.append(segment)
                 self.sequences[seqNum].seqLenSoFar += len(segment)
@@ -4790,7 +4790,7 @@ class Alignment(SequenceList):
             aLine = theLines[lineNum]
             lineNum += 1
             theName = aLine[:var.phylipDataMaxNameLength].strip()
-            aBit = p4.func.stringZapWhitespaceAndDigits(
+            aBit = DASMC.p4.func.stringZapWhitespaceAndDigits(
                 aLine[var.phylipDataMaxNameLength:])
             theSequenceBits.append(aBit)
             seqLenSoFar = len(aBit)
@@ -4802,7 +4802,7 @@ class Alignment(SequenceList):
                     if var.verboseRead:
                         print("    Early termination")
                     return False
-                aBit = p4.func.stringZapWhitespaceAndDigits(aLine)
+                aBit = DASMC.p4.func.stringZapWhitespaceAndDigits(aLine)
                 theSequenceBits.append(aBit)
                 seqLenSoFar += len(aBit)
 
@@ -4849,7 +4849,7 @@ class Alignment(SequenceList):
 
             s.name = aLine[:var.phylipDataMaxNameLength].strip()
             s.theSequenceBits = []
-            aBit = p4.func.stringZapWhitespaceAndDigits(
+            aBit = DASMC.p4.func.stringZapWhitespaceAndDigits(
                 aLine[var.phylipDataMaxNameLength:])
             s.theSequenceBits.append(aBit)
             s.seqLenSoFar = len(aBit)
@@ -4869,7 +4869,7 @@ class Alignment(SequenceList):
             except IndexError:
                 break
             # print "aLine a: %s" % aLine
-            segment = p4.func.stringZapWhitespaceAndDigits(aLine)
+            segment = DASMC.p4.func.stringZapWhitespaceAndDigits(aLine)
             if len(segment):
                 self.sequences[seqNum].theSequenceBits.append(segment)
                 self.sequences[seqNum].seqLenSoFar += len(segment)
@@ -5003,7 +5003,7 @@ class Alignment(SequenceList):
                 raise P4Error(gm)
 
             # returns 1,2 or 0, respectively
-            if p4.func.isDnaRnaOrProtein(s.temp):
+            if DASMC.p4.func.isDnaRnaOrProtein(s.temp):
                 s.sequence = s.temp
                 s.dataType = 'dna'
                 s.symbols = 'acgt'
@@ -5116,7 +5116,7 @@ class Alignment(SequenceList):
             f.write('  taxlabels')
             for i in range(len(self.sequences)):
                 f.write(
-                    ' %s' % p4.func.nexusFixNameIfQuotesAreNeeded(self.sequences[i].name))
+                    ' %s' % DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(self.sequences[i].name))
             f.write(';\n')
             f.write('end;\n\n')
         else:  # ie writeDataBlock=1
@@ -5200,7 +5200,7 @@ class Alignment(SequenceList):
                     s = self.sequences[i]
                     if len(s.name) > longest:
                         longest = len(
-                            p4.func.nexusFixNameIfQuotesAreNeeded(s.name))
+                            DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(s.name))
                 # formatString = '    %' + `-longest` + 's '  # boring
                 # left-justified
                 # cool right-justified
@@ -5216,7 +5216,7 @@ class Alignment(SequenceList):
                     for i in range(len(self.sequences)):
                         s = self.sequences[i]
                         f.write(formatString %
-                                p4.func.nexusFixNameIfQuotesAreNeeded(s.name))
+                                DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(s.name))
                         if left >= wid:
                             f.write('%s\n' % s.sequence[pos: pos + wid])
                         elif left > 0:
@@ -5234,7 +5234,7 @@ class Alignment(SequenceList):
                     s = self.sequences[i]
                     if len(s.name) > longest:
                         longest = len(
-                            p4.func.nexusFixNameIfQuotesAreNeeded(s.name))
+                            DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(s.name))
                 # formatString = '    %' + `-longest` + 's '  # boring
                 # left-justified
                 # cool right-justified
@@ -5249,7 +5249,7 @@ class Alignment(SequenceList):
                 for i in range(len(self.sequences)):
                     s = self.sequences[i]
                     f.write('    %s\n' %
-                            p4.func.nexusFixNameIfQuotesAreNeeded(s.name))
+                            DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(s.name))
                     left = len(s.sequence)
                     pos = 0
                     while left >= wid:
@@ -5568,7 +5568,7 @@ class Alignment(SequenceList):
                 splitLine = aLine.split('\"')
                 s.name = splitLine[1].strip()
                 # print s.name
-                if not p4.func.nexusCheckName(s.name):
+                if not DASMC.p4.func.nexusCheckName(s.name):
                     gm.append("Bad name '%s'" % s.name)
                     raise P4Error(gm)
             else:

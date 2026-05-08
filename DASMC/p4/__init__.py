@@ -31,7 +31,7 @@ Documentation is at <https://p4.nhm.ac.uk>
 """
 
 import sys
-sys.modules['p4'] = sys.modules[__name__]
+# sys.modules['p4'] = sys.modules[__name__]
 import os
 import glob
 import string

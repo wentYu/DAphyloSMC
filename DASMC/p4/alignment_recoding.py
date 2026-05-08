@@ -9,12 +9,12 @@ import re
 import copy
 import warnings
 from Bio.Data import CodonTable
-from p4.alignment import Alignment
-import p4.func
-from p4.var import var
-from p4.p4exceptions import P4Error
-from p4.func import read
-from p4.code_utils import \
+from DASMC.p4.alignment import Alignment
+import DASMC.p4.func
+from DASMC.p4.var import var
+from DASMC.p4.p4exceptions import P4Error
+from DASMC.p4.func import read
+from DASMC.p4.code_utils import \
         codon_position, \
         codon_position_is_degenerate, \
         codon_slice_has_aas, \
@@ -870,7 +870,7 @@ def treeFinderMAPAnalysis(alignment, groups,
         raise P4Error(gm)
 
     if run_analysis:
-        if not p4.func.which2("tf"):
+        if not DASMC.p4.func.which2("tf"):
             msg = "tf (treefinder) is not in your $PATH" + \
                   "Cannot run analysis"
             gm.append(msg)

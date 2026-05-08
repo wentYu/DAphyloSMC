@@ -1,11 +1,11 @@
 import sys
 import csv
 import random
-from p4.tree import Tree
-from p4.func import read
-from p4.var import var
-from p4.p4exceptions import P4Error
-from p4.reducedstrictconsensus import Intersection, TreeBuilderFromSplits
+from DASMC.p4.tree import Tree
+from DASMC.p4.func import read
+from DASMC.p4.var import var
+from DASMC.p4.p4exceptions import P4Error
+from DASMC.p4.reducedstrictconsensus import Intersection, TreeBuilderFromSplits
 
 
 class SuperTreeInputTrees(object):

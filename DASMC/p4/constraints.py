@@ -1,5 +1,5 @@
-import p4.func
-from p4.p4exceptions import P4Error
+import DASMC.p4.func
+from DASMC.p4.p4exceptions import P4Error
 
 
 class Constraints(object):

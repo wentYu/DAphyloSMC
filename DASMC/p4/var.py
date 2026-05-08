@@ -1,7 +1,7 @@
 import sys
 import os
 import numpy
-from p4.p4exceptions import P4Error
+from DASMC.p4.p4exceptions import P4Error
 
 # A           Ala            Alanine
 # R           Arg            Arginine
@@ -597,7 +597,7 @@ class Var(object):
             return self._examplesDir
         else:
             try:
-                from p4.installation import p4ExamplesDir
+                from DASMC.p4.installation import p4ExamplesDir
                 if os.path.exists(os.path.join(p4ExamplesDir, 'A_quickStart')) and \
                         os.path.exists(os.path.join(p4ExamplesDir, 'W_recipes')):
                     self._examplesDir = p4ExamplesDir
@@ -606,7 +606,7 @@ class Var(object):
                 # It was not installed.  It is running 'in-place' -- no
                 # installation.py file.
                 import p4
-                pth = p4.__file__
+                pth = DASMC.p4.__file__
                 # print pth
                 pth = os.path.split(pth)[0]
                 pth = os.path.split(pth)[0]

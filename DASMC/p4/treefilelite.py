@@ -1,7 +1,7 @@
-from p4.p4exceptions import P4Error
-from p4.tree import Tree
-from p4.nexus import Nexus
-from p4.var import var
+from DASMC.p4.p4exceptions import P4Error
+from DASMC.p4.tree import Tree
+from DASMC.p4.nexus import Nexus
+from DASMC.p4.var import var
 import sys
 
 import os

@@ -1,13 +1,13 @@
-import p4.func
-import p4.pf as pf
-from p4.var import var
+import DASMC.p4.func
+import DASMC.p4.pf as pf
+from DASMC.p4.var import var
 import math
 import random
 import copy
 import numpy
 import scipy
 import scipy.stats
-from p4.p4exceptions import P4Error
+from DASMC.p4.p4exceptions import P4Error
 import sys
 
 #localCalls = 0
@@ -2113,7 +2113,7 @@ class Chain(object):
             old = [0.0, 0.0]
             old[0] = mtCur.val[0] / (mtCur.val[0] + 1.0)
             old[1] = 1.0 - old[0]
-            new = p4.func.dirichlet1(
+            new = DASMC.p4.func.dirichlet1(
                 old, theProposal.tuning, var.KAPPA_MIN, var.KAPPA_MAX)
             mtProp.val[0] = new[0] / new[1]
 
@@ -2496,7 +2496,7 @@ class Chain(object):
             mtCur = mpCur.comps[cNum]
             mtProp = mpProp.comps[cNum]
             # Result of the proposal goes into mtProp.val
-            p4.func.gsl_ran_dirichlet(theProposal.tuning[self.tempNum] * mtCur.val, mtProp.val)
+            DASMC.p4.func.gsl_ran_dirichlet(theProposal.tuning[self.tempNum] * mtCur.val, mtProp.val)
             while  mtProp.val.min() < var.PIVEC_MIN:
                 for i in range(mpCur.dim):
                     if mtProp.val[i] < var.PIVEC_MIN:
@@ -2530,7 +2530,7 @@ class Chain(object):
             assert mtProp.spec != '2p', "proposeAllRMatricesDir is not set up for 2p models yet.  To do."
             # Result of the proposal goes into mtProp.val
             assert isinstance(mtProp.val, numpy.ndarray)
-            p4.func.gsl_ran_dirichlet(theProposal.tuning[self.tempNum] * mtCur.val, mtProp.val)
+            DASMC.p4.func.gsl_ran_dirichlet(theProposal.tuning[self.tempNum] * mtCur.val, mtProp.val)
             #assert isinstance(mtProp.val, numpy.ndarray)
             while  mtProp.val.min() < var.RATE_MIN or mtProp.val.max() > var.RATE_MAX:
                 for i in range(len(mtProp.val)):
@@ -2571,7 +2571,7 @@ class Chain(object):
             mtProp = mpProp.rMatrices[mtNum]
 
             # Make proposals. Result of the proposal goes into mtProp.val
-            p4.func.gsl_ran_dirichlet(theProposal.tuning[self.tempNum] * mtCur.val, mtProp.val)
+            DASMC.p4.func.gsl_ran_dirichlet(theProposal.tuning[self.tempNum] * mtCur.val, mtProp.val)
             while  mtProp.val.min() < var.RATE_MIN:
                 for i in range(ratesLen):
                     if mtProp.val[i] < var.RATE_MIN:
@@ -2612,7 +2612,7 @@ class Chain(object):
             mtProp = mpProp.rMatrices[mtNum]
 
             # Make proposals. Result of the proposal goes into mtProp.val
-            p4.func.gsl_ran_dirichlet(theProposal.tuning[self.tempNum] * mtCur.val, mtProp.val)
+            DASMC.p4.func.gsl_ran_dirichlet(theProposal.tuning[self.tempNum] * mtCur.val, mtProp.val)
             while  mtProp.val.min() < var.RATE_MIN:
                 for i in range(ratesLen):
                     if mtProp.val[i] < var.RATE_MIN:
@@ -2775,7 +2775,7 @@ class Chain(object):
         assert len(mtProp) == ratesLen
 
         # Make proposals. Result of the proposal goes into mtProp
-        p4.func.gsl_ran_dirichlet(theProposal.tuning[self.tempNum] * mtCur, mtProp)
+        DASMC.p4.func.gsl_ran_dirichlet(theProposal.tuning[self.tempNum] * mtCur, mtProp)
 
         while  mtProp.min() < var.RATE_MIN:
             for i in range(ratesLen):
@@ -2835,7 +2835,7 @@ class Chain(object):
             mtProp = mpProp.comps[mtNum]
 
             # Make proposals. Result of the proposal goes into mtProp.val
-            p4.func.gsl_ran_dirichlet(theProposal.tuning[self.tempNum] * mtCur.val, mtProp.val)
+            DASMC.p4.func.gsl_ran_dirichlet(theProposal.tuning[self.tempNum] * mtCur.val, mtProp.val)
             while  mtProp.val.min() < var.PIVEC_MIN:
                 for i in range(mpCur.dim):
                     if mtProp.val[i] < var.PIVEC_MIN:
@@ -2882,7 +2882,7 @@ class Chain(object):
             mtProp = mpProp.comps[mtNum]
 
             # Make proposals. Result of the proposal goes into mtProp.val
-            p4.func.gsl_ran_dirichlet(theProposal.tuning[self.tempNum] * mtCur.val, mtProp.val)
+            DASMC.p4.func.gsl_ran_dirichlet(theProposal.tuning[self.tempNum] * mtCur.val, mtProp.val)
             while  mtProp.val.min() < var.PIVEC_MIN:
                 for i in range(mpCur.dim):
                     if mtProp.val[i] < var.PIVEC_MIN:
@@ -3040,7 +3040,7 @@ class Chain(object):
         mtProp = mpProp.ndch2_priorRefComp
 
         # Make proposals. Result of the proposal goes into mtProp
-        p4.func.gsl_ran_dirichlet(theProposal.tuning[self.tempNum] * mtCur, mtProp)
+        DASMC.p4.func.gsl_ran_dirichlet(theProposal.tuning[self.tempNum] * mtCur, mtProp)
 
         while  mtProp.min() < var.PIVEC_MIN:
             for i in range(mpCur.dim):
@@ -8817,7 +8817,7 @@ class Chain(object):
         # group randomly.
         nChooseKs = []
         for i in range(2, nChildren):
-            nChooseKs.append(p4.func.nChooseK(nChildren, i))
+            nChooseKs.append(DASMC.p4.func.nChooseK(nChildren, i))
         cumSum = [nChooseKs[0]]
         for i in range(len(nChooseKs))[1:]:
             cumSum.append(nChooseKs[i] + cumSum[i - 1])

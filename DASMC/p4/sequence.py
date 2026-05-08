@@ -3,10 +3,10 @@ import re
 import string
 import os
 import io
-import p4.func
+import DASMC.p4.func
 import copy
-from p4.var import var
-from p4.p4exceptions import P4Error
+from DASMC.p4.var import var
+from DASMC.p4.p4exceptions import P4Error
 from subprocess import Popen, PIPE
 
 class Sequence(object):
@@ -213,7 +213,7 @@ class Sequence(object):
             raise P4Error(gm)
         nTriplets = int(self.nChar / 3)
 
-        from p4.geneticcode import GeneticCode
+        from DASMC.p4.geneticcode import GeneticCode
         gc = GeneticCode(transl_table)
 
         prSeq = Sequence()
@@ -293,7 +293,7 @@ class Sequence(object):
             gm.append("Self should be a DNA sequence.")
             raise P4Error(gm)
         if not theProteinSequence or \
-                not isinstance(theProteinSequence, p4.sequencelist.Sequence) or \
+                not isinstance(theProteinSequence, DASMC.p4.sequencelist.Sequence) or \
                 theProteinSequence.dataType != 'protein':
             gm.append("Something wrong with theProteinSequence")
             raise P4Error(gm)
@@ -309,7 +309,7 @@ class Sequence(object):
                       (theProteinSequence.nChar, (3 * theProteinSequence.nChar)))
             raise P4Error(gm)
 
-        gc = p4.geneticcode.GeneticCode(transl_table)
+        gc = DASMC.p4.geneticcode.GeneticCode(transl_table)
 
         pLen = theProteinSequence.nChar
         crimes = 0

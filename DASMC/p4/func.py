@@ -14,19 +14,19 @@ import inspect
 import datetime
 import subprocess
 
-from p4.var import var
+from DASMC.p4.var import var
 # from p4.sequencelist import Sequence, SequenceList
 # import p4.sequencelist
 # from p4.alignment import Alignment
 # from p4.nexus import Nexus
 # from p4.tree import Tree
 # from p4.node import Node
-from p4.p4exceptions import P4Error
+from DASMC.p4.p4exceptions import P4Error
 # from p4.constraints import Constraints
-import p4.pf as pf
+import DASMC.p4.pf as pf
 import numpy
 # from p4.pnumbers import Numbers
-from p4.nexustoken import nextTok
+from DASMC.p4.nexustoken import nextTok
 
 
 
@@ -474,7 +474,7 @@ def readFile(fName):
                 gm.append("Failed to read supposed p4_tPickle file '%s'." % fName)
                 raise P4Error(gm)
             else:
-                from p4.tree import Tree
+                from DASMC.p4.tree import Tree
                 if isinstance(ret, Tree):
                     ret.fName = fName
                     var.trees.append(ret)
@@ -629,7 +629,7 @@ def _decideFromContent(fName, flob):
 def _tryToReadNexusFile(fName, flob):
     if var.verboseRead:
         print("Trying to read '%s' as a nexus file..." % fName)
-    from p4.nexus import Nexus
+    from DASMC.p4.nexus import Nexus
     nf = Nexus()
 
     # nf.readNexusFile()
@@ -717,8 +717,8 @@ def _tryToReadFastaFile(fName, flob, firstLine=None):
             return
 
         flob.seek(0)
-        import p4.sequencelist
-        sl = p4.sequencelist.SequenceList(flob)   # this parses the file contents
+        import DASMC.p4.sequencelist
+        sl = DASMC.p4.sequencelist.SequenceList(flob)   # this parses the file contents
         if hasattr(flob, 'name'):
             sl.fName = flob.name
             var.fileNames.append(flob.name)
@@ -791,7 +791,7 @@ def _tryToReadPhylipFile(fName, flob, firstLine):
 
             if var.verboseRead:
                 print("Trying to read '%s' as a phylip data file..." % fName)
-            from p4.alignment import Alignment
+            from DASMC.p4.alignment import Alignment
             a = Alignment()
             if hasattr(flob, 'name'):
                 a.fName = flob.name
@@ -846,7 +846,7 @@ def _tryToReadPhylipFile(fName, flob, firstLine):
                 print(" it confused me by starting a supposed new tree with a '%s'" % tok)
             return
         flob.seek(savedPosition, 0)  # Throw the token away.
-        from p4.tree import Tree
+        from DASMC.p4.tree import Tree
         t = Tree()
         t.name = 't%i' % len(theseTrees)
         t.parseNewick(flob, None)  # None is the translationHash
@@ -878,7 +878,7 @@ def _tryToReadClustalwFile(fName, flob, firstLine=None):
     if firstLine.startswith(expectedFirstLine):
         if var.verboseRead:
             print("Trying to read '%s' as a clustalw file..." % fName)
-        from p4.alignment import Alignment
+        from DASMC.p4.alignment import Alignment
         a = Alignment()
         if hasattr(flob, 'name'):
             a.fName = flob.name
@@ -901,7 +901,7 @@ def _tryToReadClustalwFile(fName, flob, firstLine=None):
 def _tryToReadGdeFile(fName, flob):
     if var.verboseRead:
         print("Trying to read '%s' as a gde file..." % fName)
-    from p4.alignment import Alignment
+    from DASMC.p4.alignment import Alignment
     a = Alignment()
     if hasattr(flob, 'name'):
         a.fName = flob.name
@@ -924,8 +924,8 @@ def _tryToReadPirFile(fName, flob):
     if var.verboseRead:
         print("Trying to read '%s' as a pir file..." % fName)
     flob.seek(0)
-    import p4.sequencelist
-    sl = p4.sequencelist.SequenceList()
+    import DASMC.p4.sequencelist
+    sl = DASMC.p4.sequencelist.SequenceList()
     ret = sl._readOpenPirFile(flob)
     if not ret:
         if var.verboseRead:
@@ -985,7 +985,7 @@ def _tryToReadPirFile(fName, flob):
 
 def splash():
     """Print a splash screen for p4."""
-    print(f"p4 version {p4.func.versionAsGitHash(longForm=True)}")
+    print(f"p4 version {DASMC.p4.func.versionAsGitHash(longForm=True)}")
     
     print("""
 usage:
@@ -1025,7 +1025,8 @@ def versionAsDate():
     """Return the version as a date"""
 
     # Get lib path
-    lp = os.path.dirname(inspect.getfile(p4))
+    # lp = os.path.dirname(inspect.getfile(p4))
+    lp = os.path.dirname(os.path.abspath(__file__))
     # git log
     if os.path.isdir(os.path.join(os.path.dirname(lp), '.git')):
         try:
@@ -1047,7 +1048,8 @@ def versionAsGitHash(longForm=False):
     """Return the version as a git hash"""
 
     # Get lib path
-    lp = os.path.dirname(inspect.getfile(p4))
+    # lp = os.path.dirname(inspect.getfile(p4))
+    lp = os.path.dirname(os.path.abspath(__file__))
     # git log
     if os.path.isdir(os.path.join(os.path.dirname(lp), '.git')):
         try:
@@ -1085,7 +1087,8 @@ def splash2(outFile=None, verbose=True):
     stuff = []
 
     # Stolen from Cymon.  Thanks!
-    lp = os.path.dirname(inspect.getfile(p4))
+    # lp = os.path.dirname(inspect.getfile(p4))
+    lp = os.path.dirname(os.path.abspath(__file__))
     stuff.append("%16s: %s" % ("Library path", lp))
 
     # git hash.
@@ -1173,7 +1176,7 @@ def randomTree(taxNames=None, nTax=None, name='random', biRoot=False, randomBrLe
             taxNames.append('t%i' % i)
 
     if constraints:
-        from p4.constraints import Constraints
+        from DASMC.p4.constraints import Constraints
         assert isinstance(constraints, Constraints)
 
         if constraints.constraints:
@@ -1199,9 +1202,9 @@ def randomTree(taxNames=None, nTax=None, name='random', biRoot=False, randomBrLe
         # No constraints
         # Make a star tree
         #############################
-        from p4.tree import Tree
+        from DASMC.p4.tree import Tree
         t = Tree()
-        from p4.node import Node
+        from DASMC.p4.node import Node
         t.root = Node()
         t.root.nodeNum = 0
         t.root.isLeaf = 0
@@ -1318,7 +1321,7 @@ def newEmptyAlignment(dataType=None, symbols=None, taxNames=None, length=None):
             gm.append(
                 "You should not specify symbols for %s dataType." % dataType)
             raise P4Error(gm)
-    from p4.alignment import Alignment
+    from DASMC.p4.alignment import Alignment
     a = Alignment()
     a.length = length
     a.dataType = dataType
@@ -1341,8 +1344,8 @@ def newEmptyAlignment(dataType=None, symbols=None, taxNames=None, length=None):
 
     # Make sequences, composed of gaps.
     for n in taxNames:
-        import p4.sequencelist
-        s = p4.sequencelist.Sequence()
+        import DASMC.p4.sequencelist
+        s = DASMC.p4.sequencelist.Sequence()
         s.name = n
         s.dataType = a.dataType
         s.sequence = '-' * a.length
@@ -2263,7 +2266,7 @@ def unPickleSTMcmc(runNum, verbose=True):
             ch.startFrrf()
 
     if m.modelName == 'SPA' and var.stmcmc_useFastSpa:
-        import p4.fastspa as fastspa
+        import DASMC.p4.fastspa as fastspa
         m.fspa = fastspa.FastSpa(m.useSplitSupport)
         for tNum, t in enumerate(m.trees):
             m.fspa.setInTr(tNum, t.nTax, m.nTax, t.baTaxBits.to01(), t.firstTax)
@@ -2398,7 +2401,7 @@ to be done as root, or using sudo.""")
     if not weAreInteractive:
         return
     try:
-        import p4.installation
+        import DASMC.p4.installation
     except ImportError:
         raise P4Error("Unable to import the p4.installation module.")
     print("""
@@ -3465,7 +3468,7 @@ def _compareSplitsBetweenTwoTreePartitions(tp1, tp2, minimumProportion, verbose=
     diffs = []
     for i in ret:
         # print "            %.3f  %.3f    " % (i[2][0], i[2][1]),
-        stdDev = math.sqrt(p4.func.variance(i[2]))
+        stdDev = math.sqrt(DASMC.p4.func.variance(i[2]))
         # print "%.5f" % stdDev
         sumOfStdDevs += stdDev
         diffs.append(math.fabs(i[2][0] - i[2][1]))
@@ -3514,7 +3517,7 @@ def compareSplitsBetweenTreePartitions(treePartitionsList, precision=3, linewidt
         tp1 = treePartitionsList[mNum1]
         for mNum2 in range(mNum1):
             tp2 = treePartitionsList[mNum2]
-            thisAsdoss, thisMaxDiff, thisMeanDiff = p4.func._compareSplitsBetweenTwoTreePartitions(
+            thisAsdoss, thisMaxDiff, thisMeanDiff = DASMC.p4.func._compareSplitsBetweenTwoTreePartitions(
                 tp1, tp2, minimumProportion, verbose=False)
             #if thisAsdoss == None and verbose:
             #    print("No splits > %s" % minimumProportion)

@@ -2,7 +2,7 @@ from IPython import get_ipython
 
 def custom_exc(shell, etype, evalue, tb, tb_offset=None):
     import traceback
-    from p4.interactive.excepthook import invoke_editor 
+    from DASMC.p4.interactive.excepthook import invoke_editor
     te = traceback.extract_tb(tb)
     shell.showtraceback((etype, evalue, tb), tb_offset=tb_offset)
     invoke_editor(te)

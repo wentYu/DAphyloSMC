@@ -18,5 +18,21 @@ __version__ = "0.1.0"
 
 from . import p4
 import sys
-
-sys.modules['p4'] = p4
+# import pkgutil
+# import importlib
+#
+#
+# for mod_name in list(sys.modules.keys()):
+#     if mod_name == 'p4' or mod_name.startswith('p4.'):
+#         del sys.modules[mod_name]
+#
+# importlib.invalidate_caches()
+#
+# sys.modules['p4'] = p4
+#
+# for module_info in pkgutil.walk_packages(p4.__path__, 'p4.'):
+#     try:
+#         mod = importlib.import_module(module_info.name)
+#         sys.modules[module_info.name] = mod
+#     except ImportError:
+#         continue

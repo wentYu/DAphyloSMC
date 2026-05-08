@@ -1,6 +1,6 @@
-import p4.pf as pf
-import p4.func
-from p4.var import var
+import DASMC.p4.pf as pf
+import DASMC.p4.func
+from DASMC.p4.var import var
 import math
 import random
 import string
@@ -9,13 +9,13 @@ import time
 import copy
 import os
 import pickle
-from p4.chain import Chain
-from p4.p4exceptions import P4Error
-from p4.treepartitions import TreePartitions
-from p4.constraints import Constraints
-from p4.node import Node
-from p4.pnumbers import Numbers
-from p4.simtemp import SimTemp,SimTempTemp
+from DASMC.p4.chain import Chain
+from DASMC.p4.p4exceptions import P4Error
+from DASMC.p4.treepartitions import TreePartitions
+from DASMC.p4.constraints import Constraints
+from DASMC.p4.node import Node
+from DASMC.p4.pnumbers import Numbers
+from DASMC.p4.simtemp import SimTemp,SimTempTemp
 import datetime
 import numpy
 import logging
@@ -676,7 +676,7 @@ class Mcmc(object):
 
     """
 
-    def __init__(self, aTree, nChains=4, runNum=0, sampleInterval=100, checkPointInterval=10000, simulate=None, writePrams=True, constraints=None, verbose=True, simTempNTemps=None, simTempMax=10.0,DLmodel=None,SingleSite=False):
+    def __init__(self, aTree, nChains=4, runNum=0, sampleInterval=100, checkPointInterval=10000, simulate=None, writePrams=True, constraints=None, verbose=True, simTempNTemps=None, simTempMax=10.0):
         gm = ['Mcmc.__init__()']
         self.verbose = verbose
         if aTree and aTree.model and aTree.data:
@@ -737,7 +737,7 @@ class Mcmc(object):
             for sk in self.constraints.constraints:
                 if sk not in mySplitKeys:
                     # self.tree.draw()
-                    gm.append('Constraint %i %s' % (sk, p4.func.getSplitStringFromKey(sk, self.tree.nTax)))
+                    gm.append('Constraint %i %s' % (sk, DASMC.p4.func.getSplitStringFromKey(sk, self.tree.nTax)))
                     gm.append('is not in the starting tree.')
                     gm.append('Maybe you want to make a randomTree with constraints?')
                     raise P4Error(gm)
@@ -959,7 +959,7 @@ class Mcmc(object):
             gm.append("The tree that you supply should have a 'taxNames' attribute.")
             gm.append("The taxNames should be in the same order as the data.")
             raise P4Error(gm)
-        aTree.calcLogLike(verbose=False,DLmodel=DLmodel,SingleSite=SingleSite)
+        aTree.calcLogLike(verbose=False)
 
         if 0:
             # print complaintHead
@@ -1200,7 +1200,7 @@ class Mcmc(object):
             self.prob.rMatrixLocation = 0.0
             #self.prob.gdasrvLocation = 0.0
 
-        splash = p4.func.splash2(verbose=False)
+        splash = DASMC.p4.func.splash2(verbose=False)
         for aLine in splash:
             # print(aLine)
             self.logger.info(aLine)
@@ -2516,7 +2516,7 @@ class Mcmc(object):
             # nTax-2 inclusive.
             p = self.props.topologyProposalsDict.get('polytomy')
             if p and self.polytomyUseResolutionClassPrior:
-                bigT = p4.func.nUnrootedTreesWithMultifurcations(self.tree.nTax)
+                bigT = DASMC.p4.func.nUnrootedTreesWithMultifurcations(self.tree.nTax)
                 p.logBigT = [0.0] * (self.tree.nTax - 1)
                 for i in range(1, self.tree.nTax - 1):
                     p.logBigT[i] = math.log(bigT[i])
@@ -2552,7 +2552,7 @@ class Mcmc(object):
         self.treeFile.write('  dimensions ntax=%s;\n' % self.tree.nTax)
         self.treeFile.write('  taxlabels')
         for tN in self.tree.taxNames:
-            self.treeFile.write(' %s' % p4.func.nexusFixNameIfQuotesAreNeeded(tN))
+            self.treeFile.write(' %s' % DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(tN))
         self.treeFile.write(';\nend;\n\n')
 
         self.treeFile.write('begin trees;\n')
@@ -2565,9 +2565,9 @@ class Mcmc(object):
         self.treeFile.write('  translate\n')
         for i in range(self.tree.nTax - 1):
             self.treeFile.write('    %3i %s,\n' % (
-                i + 1, p4.func.nexusFixNameIfQuotesAreNeeded(self.tree.taxNames[i])))
+                i + 1, DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(self.tree.taxNames[i])))
         self.treeFile.write('    %3i %s\n' % (
-            self.tree.nTax, p4.func.nexusFixNameIfQuotesAreNeeded(self.tree.taxNames[-1])))
+            self.tree.nTax, DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(self.tree.taxNames[-1])))
         self.treeFile.write('  ;\n')
 
         # write the models comment
@@ -2609,7 +2609,7 @@ class Mcmc(object):
 
         
 
-    def run(self, nGensToDo, verbose=True, equiProbableProposals=False, writeSamples=True,DLmodel=None,SingleSite=False):
+    def run(self, nGensToDo, verbose=True, equiProbableProposals=False, writeSamples=True):
         """Start the Mcmc running."""
 
         gm = ['Mcmc.run()']
@@ -2770,7 +2770,7 @@ class Mcmc(object):
             if self.simulate:
                 self.simTree = self.tree.dupe()
                 self.simTree.data = self.tree.data.dupe()
-                self.simTree.calcLogLike(verbose=False,DLmodel=DLmodel,SingleSite=SingleSite)
+                self.simTree.calcLogLike(verbose=False)
 
             self._makeChainsAndProposals()
             self._setOutputTreeFile()
@@ -3117,7 +3117,7 @@ class Mcmc(object):
 
             if doWrite and not self.doSteppingStone:
                 if writeSamples:
-                    self._writeSample(DLmodel=DLmodel,SingleSite=SingleSite)
+                    self._writeSample()
 
 
                 # Do a simulation
@@ -3196,7 +3196,7 @@ class Mcmc(object):
                         if not ret:
                             gm.append("Programming error.")
                             gm.append(f"The current tree (the last tree sampled) does not contain constraint sk")
-                            gm.append("%s" % p4.func.getSplitStringFromKey(sk, self.tree.nTax))
+                            gm.append("%s" % DASMC.p4.func.getSplitStringFromKey(sk, self.tree.nTax))
                             raise P4Error(gm)
                     if self.constraints.rooting:
                         ret = self.constraints.areConsistentWithTreeRoot(self.chains[self.coldChainNum].curTree)
@@ -3228,7 +3228,7 @@ class Mcmc(object):
                     fout.close()
 
                 # print(f"writing checkpoint at self.gen {self.gen}, gNum {gNum}")
-                self.checkPoint(DLmodel=DLmodel,SingleSite=SingleSite)
+                self.checkPoint()
 
                 # The stuff below needs to be done in a re-start as well.
                 # See above "if self.proposals:"
@@ -3322,7 +3322,7 @@ class Mcmc(object):
 
 
 
-    def _writeSample(self,DLmodel=None,SingleSite=False):
+    def _writeSample(self):
         try:
             self.likesFile.write('%11i %f\n' % (self.gen + 1, self.chains[self.coldChainNum].curTree.logLike))
         except (AttributeError, ValueError):
@@ -3335,7 +3335,7 @@ class Mcmc(object):
             print("gen+1 %11i  %f  " % (
                 self.gen+1, 
                 self.chains[self.coldChainNum].curTree.logLike), end=' ')
-            self.chains[self.coldChainNum].curTree.calcLogLike(verbose=False,DLmodel=DLmodel,SingleSite=SingleSite)
+            self.chains[self.coldChainNum].curTree.calcLogLike(verbose=False)
             newLike = self.chains[self.coldChainNum].curTree.logLike
             print("%f" % self.chains[self.coldChainNum].curTree.logLike, end=' ')
             likeDiff = math.fabs(oldLike - newLike)
@@ -3627,7 +3627,7 @@ class Mcmc(object):
                 self.simFile.write(' %i' % ret[pNum])
         self.simFile.write('\n')
 
-    def checkPoint(self,DLmodel=None,SingleSite=False):
+    def checkPoint(self):
 
         if 0:
             for chNum,ch in enumerate(self.chains):
@@ -3708,14 +3708,14 @@ class Mcmc(object):
         self.tree.data = savedData
         self.logger = savedLogger
         self.loggerPrinter = savedLoggerPrinter
-        self.tree.calcLogLike(verbose=False, resetEmpiricalComps=False,DLmodel=DLmodel,SingleSite=SingleSite)
+        self.tree.calcLogLike(verbose=False, resetEmpiricalComps=False)
         if self.simulate:
             self.simTree.data = savedSimData
-            self.simTree.calcLogLike(verbose=False, resetEmpiricalComps=False,DLmodel=DLmodel,SingleSite=SingleSite)
+            self.simTree.calcLogLike(verbose=False, resetEmpiricalComps=False)
         for chNum,ch in enumerate(self.chains):
             ch.curTree.data = savedData
             #print("After restoring data", end=' ')
-            ch.curTree.calcLogLike(verbose=False, resetEmpiricalComps=False,DLmodel=DLmodel,SingleSite=SingleSite)
+            ch.curTree.calcLogLike(verbose=False, resetEmpiricalComps=False)
             theDiff = math.fabs(ch.curTree.savedLogLike - ch.curTree.logLike)
 
             # if theDiff > 0.01:
@@ -3730,7 +3730,7 @@ class Mcmc(object):
             ch.propTree.data = savedData
             #ch.propTree.dump(node=True)
             #ch.propTree.draw()
-            ch.propTree.calcLogLike(verbose=False, resetEmpiricalComps=False,DLmodel=DLmodel,SingleSite=SingleSite)
+            ch.propTree.calcLogLike(verbose=False, resetEmpiricalComps=False)
         if self.setupPfLogging:
             for ch in self.chains:
                 pf.setMcmcTreeCallback(ch.curTree.cTree, self._logFromPfModule)

@@ -1,19 +1,20 @@
 import sys,traceback
 import os
-from p4.var import var
-import p4.func
+from DASMC.p4.var import var
+import DASMC.p4.func as func
+# import DASMC.p4.func
 
 def invoke_editor(extractedTraceback):
-    p4.func.writeInColour("\nWhere do you want to go? ...\n", colour="blue")
+    func.writeInColour("\nWhere do you want to go? ...\n", colour="blue")
 
     te = extractedTraceback
     for teItemNum in range(len(te)):  # te is a traceback.extract_tb() result
         theTeItem = te[teItemNum]
-        p4.func.writeInColour("%2i" % teItemNum, colour='red')
+        func.writeInColour("%2i" % teItemNum, colour='red')
         print("  line %4i,  %s" %  (theTeItem[1], theTeItem[0]))
-    p4.func.setTerminalColour("blue")
+    func.setTerminalColour("blue")
     ret = input('Tell me a number (or nothing to do nothing): ')
-    p4.func.unsetTerminalColour()
+    func.unsetTerminalColour()
     #print("Got %s" % ret)
     retNum = None
     if ret == '':

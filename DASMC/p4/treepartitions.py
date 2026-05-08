@@ -2,14 +2,14 @@ import string
 import io
 import sys
 import os
-from p4.tree import Tree
-from p4.node import Node, NodePart, NodeBranchPart
-from p4.trees import Trees
-from p4.nexus import Nexus, NexusData
-from p4.p4exceptions import P4Error
-from p4.nexustoken import nextTok, safeNextTok, nexusSkipPastNextSemiColon
-import p4.func
-from p4.var import var
+from DASMC.p4.tree import Tree
+from DASMC.p4.node import Node, NodePart, NodeBranchPart
+from DASMC.p4.trees import Trees
+from DASMC.p4.nexus import Nexus, NexusData
+from DASMC.p4.p4exceptions import P4Error
+from DASMC.p4.nexustoken import nextTok, safeNextTok, nexusSkipPastNextSemiColon
+import DASMC.p4.func
+from DASMC.p4.var import var
 
 longMessage1 = """
 This table shows, for splits that were used in the cons tree (ie not
@@ -739,7 +739,7 @@ class TreePartitions(object):
         gm = ['TreePartitions.finishSplits()']
         # print "self.nTrees = %s" % self.nTrees
         for spl in self.splits:
-            spl.string = p4.func.getSplitStringFromKey(spl.key, self.nTax)
+            spl.string = DASMC.p4.func.getSplitStringFromKey(spl.key, self.nTax)
             listForSet = []
             for i in range(len(spl.string)):
                 if spl.string[i] == '*':
@@ -760,7 +760,7 @@ class TreePartitions(object):
         # (arbitrarily, so it looks nice, and is consistent)
         for spl in self.splits:
             spl.proportion = -1.0 * spl.proportion
-        self.splits = p4.func.sortListOfObjectsOn2Attributes(
+        self.splits = DASMC.p4.func.sortListOfObjectsOn2Attributes(
             self.splits, 'proportion', 'string')
         #self.splits = p4.func.sortListOfObjectsOn2Attributes(self.splits, 'proportion', 'key')
         for spl in self.splits:
@@ -768,7 +768,7 @@ class TreePartitions(object):
             
         # Finish self.biSplits
         for spl in self.biSplits:
-            spl.string = p4.func.getSplitStringFromKey(spl.key, self.nTax)
+            spl.string = DASMC.p4.func.getSplitStringFromKey(spl.key, self.nTax)
             spl.proportion = spl.count / float(self.nTrees)
                     
 
@@ -1762,7 +1762,7 @@ class TreePartitions(object):
                 if n.br.biRootCount:
                     n.biRootProportion = n.br.biRootCount / sumBiRootCount  # should be on the n.br, not the node, but I need it on the node to sort it
                     nodesWithBiRootProportions.append(n)
-            nodesWithBiRootProportions = p4.func.sortListOfObjectsOnAttribute(nodesWithBiRootProportions, "biRootProportion")
+            nodesWithBiRootProportions = DASMC.p4.func.sortListOfObjectsOnAttribute(nodesWithBiRootProportions, "biRootProportion")
             nodesWithBiRootProportions.reverse()
 
             maxRootCount = nodesWithBiRootProportions[0].br.biRootCount
@@ -2020,7 +2020,7 @@ class TreePartitions(object):
                     if n.br.biRootCount:
                         n.biRootRank = n.br.biRootRank   # moved to n for sorting
                         nnn.append(n)
-                nnn = p4.func.sortListOfObjectsOnAttribute(nnn, 'biRootRank')
+                nnn = DASMC.p4.func.sortListOfObjectsOnAttribute(nnn, 'biRootRank')
 
                 print("node  br.biRootCount  proportion   rank")
                 for n in nnn:
@@ -2281,7 +2281,7 @@ class TreePartitions(object):
         self.finishSplits()
 
     def getSplitForTaxNames(self, txNames):
-        k = p4.func.getSplitKeyFromTaxNames(self.taxNames, txNames)
+        k = DASMC.p4.func.getSplitKeyFromTaxNames(self.taxNames, txNames)
         return self.splitsDict.get(k)
 
     def getProportionRange(self, verbose=False):

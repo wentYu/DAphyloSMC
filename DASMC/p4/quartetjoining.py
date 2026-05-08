@@ -1,13 +1,13 @@
-from p4.p4exceptions import P4Error
-import p4.func
-from p4.func import read
-from p4.var import var
-from p4.tree import Tree
-from p4.node import Node, NodeBranch
+from DASMC.p4.p4exceptions import P4Error
+import DASMC.p4.func
+from DASMC.p4.func import read
+from DASMC.p4.var import var
+from DASMC.p4.tree import Tree
+from DASMC.p4.node import Node, NodeBranch
 import sys
 import random
 import copy
-from p4.pnumbers import Numbers
+from DASMC.p4.pnumbers import Numbers
 import math
 
 # I suppose if there are input trees whose tax sets are equal to or subsets
@@ -528,7 +528,7 @@ class QuartetJoining(object):
         # that too slow?
         if self.addHighFrequencyTaxaFirst:
             random.shuffle(self.unusedTaxa)
-            self.unusedTaxa = p4.func.sortListOfObjectsOnAttribute(
+            self.unusedTaxa = DASMC.p4.func.sortListOfObjectsOnAttribute(
                 self.unusedTaxa, 'nTrees')
 
         self.bigTInternalNodes = [n for n in self.bigT.iterInternalsNoRoot()]
@@ -546,9 +546,9 @@ class QuartetJoining(object):
         if self.verbose:
             if self.doPips:
                 print()
-            p4.func.setTerminalColour(BIG_T_COLOUR)
+            DASMC.p4.func.setTerminalColour(BIG_T_COLOUR)
             self.bigT.draw()
-            p4.func.unsetTerminalColour()
+            DASMC.p4.func.unsetTerminalColour()
             print("The tree above is the starting tree, becoming self.bigT")
             # for n in self.bigT.iterNodesNoRoot():
             #    print "  node %2i %10s  %s" % (n.nodeNum, n.name, self.getTaxBitsString(n.br.bitKey))
@@ -561,9 +561,9 @@ class QuartetJoining(object):
         while len(self.bigT.taxNames) < self.nTax:
             self.didBreakTie = False
             if self.verbose >= 2:
-                p4.func.setTerminalColour('BLUE')
+                DASMC.p4.func.setTerminalColour('BLUE')
                 print("About to tryToAddAnyX() ...")
-                p4.func.unsetTerminalColour()
+                DASMC.p4.func.unsetTerminalColour()
                 print("self.usedTaxa = %s" % [tx.name for tx in self.usedTaxa])
 
             # if self.doCountTries:
@@ -1083,9 +1083,9 @@ class QuartetJoining(object):
         #    self.diagn.firstFourTaxa = ''.join([tx.name for tx in fourTaxa])
 
         if self.verbose >= 2:
-            p4.func.setTerminalColour(INPUT_T_COLOUR)
+            DASMC.p4.func.setTerminalColour(INPUT_T_COLOUR)
             randTree.draw()
-            p4.func.unsetTerminalColour()
+            DASMC.p4.func.unsetTerminalColour()
             print("To get a quartet, I start with a randomly chosen input tree (above),")
             print("and chose a random internal node -- in this case node %i" % aNode.nodeNum)
             print("Then I randomly choose 2 taxa on one side and 2 taxa on the other side of that split.")
@@ -1160,9 +1160,9 @@ class QuartetJoining(object):
             votes = [0] * 3
             for gT in treesWithTheFourTaxa:
                 if self.verbose >= 2:
-                    p4.func.setTerminalColour(INPUT_T_COLOUR)
+                    DASMC.p4.func.setTerminalColour(INPUT_T_COLOUR)
                     gT.draw()
-                    p4.func.unsetTerminalColour()
+                    DASMC.p4.func.unsetTerminalColour()
                 gotIt = False
                 tNode = gT.root
                 while not gotIt:
@@ -1197,11 +1197,11 @@ class QuartetJoining(object):
                                 bitsBelow = (
                                     self.allOnes ^ n.br.bitKey) & gT.taxBits
                                 if 0:
-                                    p4.func.setTerminalColour('violet')
+                                    DASMC.p4.func.setTerminalColour('violet')
                                     gT.draw()
                                     print("taxa below node %i are %s" % (
                                         n.nodeNum, self.getTaxBitsString(bitsBelow)))
-                                    p4.func.unsetTerminalColour()
+                                    DASMC.p4.func.unsetTerminalColour()
 
                                 for bk in [bk0, bk1, bk2, bk3]:
                                     if bk & bitsBelow:
@@ -1401,14 +1401,14 @@ class QuartetJoining(object):
                     n.pc2 = self.popcount(
                         self.bigT.taxBits & (self.allOnes ^ n.br.bitKey))
                 n.pc012 = n.pc0 * n.pc1 * n.pc2
-            self.bigTInternalNodes = p4.func.sortListOfObjectsOnAttribute(
+            self.bigTInternalNodes = DASMC.p4.func.sortListOfObjectsOnAttribute(
                 self.bigTInternalNodes, 'pc012')
 
             if self.verbose >= 2:
                 print("self.taxa are", [tx.name for tx in self.taxa])
-                p4.func.setTerminalColour(BIG_T_COLOUR)
+                DASMC.p4.func.setTerminalColour(BIG_T_COLOUR)
                 self.bigT.draw()
-                p4.func.unsetTerminalColour()
+                DASMC.p4.func.unsetTerminalColour()
                 print("(The tree above is bigT)")
                 for n in self.bigTInternalNodes:
                     print("  node %2i " % n.nodeNum, end=' ')
@@ -1571,9 +1571,9 @@ class QuartetJoining(object):
         #        print "goodInternalNodeNums", goodInternalNodeNums
         if self.verbose >= 2:
             print("goodInternals (in bigT):")
-            p4.func.setTerminalColour(BIG_T_COLOUR)
+            DASMC.p4.func.setTerminalColour(BIG_T_COLOUR)
             self.bigT.draw()
-            p4.func.unsetTerminalColour()
+            DASMC.p4.func.unsetTerminalColour()
             print("(The tree above is bigT)")
             if self.doCentralNodeStrategy:
                 for n in self.bigTInternalNodes:
@@ -1604,9 +1604,9 @@ class QuartetJoining(object):
                 print("goodInternalNodeNums are now %s" % goodInternalNodeNums)
             if 0 and self.dbug and x.name == 'Z':
                 theNodeNum = 3
-                p4.func.setTerminalColour('VIOLET')
+                DASMC.p4.func.setTerminalColour('VIOLET')
                 self.bigT.draw()
-                p4.func.unsetTerminalColour()
+                DASMC.p4.func.unsetTerminalColour()
                 print("dbug: goodInternalNodeNums", goodInternalNodeNums)
                 print("dbug: choosing node %i in bigT" % theNodeNum)
                 goodInternalNodeNums.remove(theNodeNum)
@@ -1654,9 +1654,9 @@ class QuartetJoining(object):
                         # successful or will fail.
                         print("  Failed to get a quartet, so choose another theNode from goodInternals")
                         if self.verbose >= 3:
-                            p4.func.setTerminalColour(BIG_T_COLOUR)
+                            DASMC.p4.func.setTerminalColour(BIG_T_COLOUR)
                             self.bigT.draw()
-                            p4.func.unsetTerminalColour()
+                            DASMC.p4.func.unsetTerminalColour()
                             print("  (The tree above is the current bigT)")
 
         # A list, one for each tree that had a k, unless limited by
@@ -1681,9 +1681,9 @@ class QuartetJoining(object):
             # len(kBrs)
             print("    and %i kIntNodes, %s" % (len(kIntNodes), [n.nodeNum for n in kIntNodes]))
             if self.verbose >= 3:
-                p4.func.setTerminalColour(BIG_T_COLOUR)
+                DASMC.p4.func.setTerminalColour(BIG_T_COLOUR)
                 self.bigT.draw()
-                p4.func.unsetTerminalColour()
+                DASMC.p4.func.unsetTerminalColour()
                 print("(The tree above is bigT, in which we find the kIntNodes %s)" % (
                     [n.nodeNum for n in kIntNodes]))
             if len(kBrs) > 1:
@@ -1727,7 +1727,7 @@ class QuartetJoining(object):
         # print "refineKSubTree() start. got %i kIntNodes, %i kBrs" %
         # (len(kIntNodes), len(kBrs))
         if self.doCentralNodeStrategy:
-            kIntNodes = p4.func.sortListOfObjectsOnAttribute(kIntNodes, 'pc012')
+            kIntNodes = DASMC.p4.func.sortListOfObjectsOnAttribute(kIntNodes, 'pc012')
         else:
             random.shuffle(kIntNodes)
         # print "Starting refineKSubTree() with %i kIntNodes" % len(kIntNodes)
@@ -1812,9 +1812,9 @@ class QuartetJoining(object):
 
         if self.verbose >= 2:
             print("Before adding the leaf, bigT is:")
-            p4.func.setTerminalColour(BIG_T_COLOUR)
+            DASMC.p4.func.setTerminalColour(BIG_T_COLOUR)
             self.bigT.draw()
-            p4.func.unsetTerminalColour()
+            DASMC.p4.func.unsetTerminalColour()
 
         # The Tree.addLeaf() method adds 2 nodes, one for the leaf,
         # and one on the branch leading from theNode.  The leaf node
@@ -1837,9 +1837,9 @@ class QuartetJoining(object):
             print("    addLeafToBigT: Add a leaf x=%s on the branch for node %i." % (
                 x.name, theNode.nodeNum))
             if self.verbose >= 2:
-                p4.func.setTerminalColour(BIG_T_COLOUR)
+                DASMC.p4.func.setTerminalColour(BIG_T_COLOUR)
                 self.bigT.draw()
-                p4.func.unsetTerminalColour()
+                DASMC.p4.func.unsetTerminalColour()
                 print("... resulting in the tree above, with %i leaves." % self.bigT.nTax)
                 self.pause()
 
@@ -1930,9 +1930,9 @@ class QuartetJoining(object):
         if self.verbose >= 2:
             print("The (first) tree with the biggest sub-tree (with %i leaves) tree follows:" % (
                 nLeavesInBiggestSubTree))
-            p4.func.setTerminalColour(INPUT_T_COLOUR)
+            DASMC.p4.func.setTerminalColour(INPUT_T_COLOUR)
             qWithBiggestSubTree.tree.draw()
-            p4.func.unsetTerminalColour()
+            DASMC.p4.func.unsetTerminalColour()
 
         theSubTree = qWithBiggestSubTree.tree.dupeSubTree(
             qWithBiggestSubTree.xNode, up=qWithBiggestSubTree.up)
@@ -1969,13 +1969,13 @@ class QuartetJoining(object):
         if self.verbose >= 2:
             # if not qWithBiggestSubTree.up:
             if 1:
-                p4.func.setTerminalColour(BIG_T_COLOUR)
+                DASMC.p4.func.setTerminalColour(BIG_T_COLOUR)
                 self.bigT.draw()
-                p4.func.unsetTerminalColour()
+                DASMC.p4.func.unsetTerminalColour()
                 print("addXSubTreeToBigT().  The tree above is the current bigT")
-                p4.func.setTerminalColour('violet')
+                DASMC.p4.func.setTerminalColour('violet')
                 theSubTree.draw()
-                p4.func.unsetTerminalColour()
+                DASMC.p4.func.unsetTerminalColour()
                 print("addXSubTreeToBigT().  The tree above is the sub-tree")
                 print("Add it to node %i in bigT" % theNode.nodeNum)
                 print("addXSubTreeToBigT().  nLeaves = %2i, up=%5s" % (
@@ -2007,18 +2007,18 @@ class QuartetJoining(object):
                         print("node %2i  %s" % (n.nodeNum, self.getTaxBitsString(n.br.bitKey)))
                     else:
                         print("node %2i  None" % n.nodeNum)
-                p4.func.setTerminalColour(BIG_T_COLOUR)
+                DASMC.p4.func.setTerminalColour(BIG_T_COLOUR)
                 self.bigT.draw()
-                p4.func.unsetTerminalColour()
+                DASMC.p4.func.unsetTerminalColour()
                 print("The above is bigT, after adding %i nodes" % nLeavesInBiggestSubTree)
 
         # if qWithBiggestSubTree.up == False:
         #    self.checkBitKeys(self.bigT)
 
         if self.verbose >= 2:
-            p4.func.setTerminalColour(BIG_T_COLOUR)
+            DASMC.p4.func.setTerminalColour(BIG_T_COLOUR)
             self.bigT.draw()
-            p4.func.unsetTerminalColour()
+            DASMC.p4.func.unsetTerminalColour()
             print("The tree above is the current bigT, after adding the sub-tree.")
 
         # Need the taxBits from the subTree to add to self.bigT
@@ -2089,7 +2089,7 @@ class QuartetJoining(object):
                 if 0:
                     print("  The following are the %i input trees from which to get a quartet:" % len(goodTrees))
                     for t in goodTrees:
-                        p4.func.setTerminalColour(INPUT_T_COLOUR)
+                        DASMC.p4.func.setTerminalColour(INPUT_T_COLOUR)
                         sL = t.textDrawList(showInternalNodeNames=False,
                                             addToBrLen=0.0, width=50,
                                             autoIncreaseWidth=True,
@@ -2097,13 +2097,13 @@ class QuartetJoining(object):
                         for s in sL:
                             print("    ", end=' ')
                             print(s)
-                        p4.func.unsetTerminalColour()
+                        DASMC.p4.func.unsetTerminalColour()
                 # if self.verbose >= 3:
                 #    self.pause()
 
-                p4.func.setTerminalColour(BIG_T_COLOUR)
+                DASMC.p4.func.setTerminalColour(BIG_T_COLOUR)
                 self.bigT.draw()
-                p4.func.unsetTerminalColour()
+                DASMC.p4.func.unsetTerminalColour()
                 print("(The tree above is bigT)")
                 print("getQuartetsForXForNode()  theNode=%i, x=%s" % (theNode.nodeNum, x.name))
                 print("theNode.pc0 = %s" % theNode.pc0)
@@ -2119,9 +2119,9 @@ class QuartetJoining(object):
         allBits = x.bitKey | bk0 | bk1 | bk2
         if 0:  # self.dbug:
             if x.name == 'W':
-                p4.func.setTerminalColour(BIG_T_COLOUR)
+                DASMC.p4.func.setTerminalColour(BIG_T_COLOUR)
                 self.bigT.draw()
-                p4.func.unsetTerminalColour()
+                DASMC.p4.func.unsetTerminalColour()
                 print("(The tree above is bigT)")
                 print("getQuartetsForXForNode()  theNode=%i, x=%s" % (theNode.nodeNum, x.name))
                 print("bk0 = %s" % self.getTaxBitsString(bk0))
@@ -2134,7 +2134,7 @@ class QuartetJoining(object):
 
         for gT in goodTrees:
             if self.verbose >= 2:
-                p4.func.setTerminalColour(INPUT_T_COLOUR)
+                DASMC.p4.func.setTerminalColour(INPUT_T_COLOUR)
                 sL = gT.textDrawList(showInternalNodeNames=False,
                                      addToBrLen=0.0, width=50,
                                      autoIncreaseWidth=True,
@@ -2142,7 +2142,7 @@ class QuartetJoining(object):
                 for s in sL:
                     print("    ", end=' ')
                     print(s)
-                p4.func.unsetTerminalColour()
+                DASMC.p4.func.unsetTerminalColour()
                 print("Input tree containing the right bitKeys")
 
             gotIt = False
@@ -2181,10 +2181,10 @@ class QuartetJoining(object):
                             bitsBelow = (
                                 self.allOnes ^ n.br.bitKey) & gT.taxBits
                             if 0:
-                                p4.func.setTerminalColour('violet')
+                                DASMC.p4.func.setTerminalColour('violet')
                                 gT.draw()
                                 print("taxa below node %i are %s" % (n.nodeNum, self.getTaxBitsString(bitsBelow)))
-                                p4.func.unsetTerminalColour()
+                                DASMC.p4.func.unsetTerminalColour()
 
                             for bk in [bk0, bk1, bk2, x.bitKey]:
                                 if bk & bitsBelow:
@@ -2368,7 +2368,7 @@ class QuartetJoining(object):
         for gT in theTrees:
 
             if self.verbose >= 2:
-                p4.func.setTerminalColour(INPUT_T_COLOUR)
+                DASMC.p4.func.setTerminalColour(INPUT_T_COLOUR)
                 sL = gT.textDrawList(showInternalNodeNames=False,
                                      addToBrLen=0.0, width=50,
                                      autoIncreaseWidth=True,
@@ -2376,7 +2376,7 @@ class QuartetJoining(object):
                 for s in sL:
                     print("    ", end=' ')
                     print(s)
-                p4.func.unsetTerminalColour()
+                DASMC.p4.func.unsetTerminalColour()
                 # print "Input tree containing the right bitKeys"
 
             gotIt = False
@@ -2415,10 +2415,10 @@ class QuartetJoining(object):
                             bitsBelow = (
                                 self.allOnes ^ n.br.bitKey) & gT.taxBits
                             if 0:
-                                p4.func.setTerminalColour('violet')
+                                DASMC.p4.func.setTerminalColour('violet')
                                 gT.draw()
                                 print("taxa below node %i are %s" % (n.nodeNum, self.getTaxBitsString(bitsBelow)))
-                                p4.func.unsetTerminalColour()
+                                DASMC.p4.func.unsetTerminalColour()
 
                             for bk in [bk0, bk1, bk2, bk3]:
                                 if bk & bitsBelow:
@@ -2529,10 +2529,10 @@ class QuartetJoining(object):
 
     def pause(self):
         if self.verbose >= 3:
-            p4.func.setTerminalColour('blue')
+            DASMC.p4.func.setTerminalColour('blue')
             input("Hit return to continue ...")
             print("=" * 90)
-            p4.func.unsetTerminalColour()
+            DASMC.p4.func.unsetTerminalColour()
         else:
             pass
 
@@ -2638,9 +2638,9 @@ class QuartetJoining(object):
         recalculatedInternalNodesSet.add(self.bigT.root)
         existingSet = set(self.bigTInternalNodes)
         if recalculatedInternalNodesSet != existingSet:
-            p4.func.setTerminalColour(BIG_T_COLOUR)
+            DASMC.p4.func.setTerminalColour(BIG_T_COLOUR)
             self.bigT.draw()
-            p4.func.unsetTerminalColour()
+            DASMC.p4.func.unsetTerminalColour()
             gm = ["checkBigTInternalNodes()"]
             gm.append("existingSet = %s" % [n.nodeNum for n in existingSet])
             gm.append("recalculated = %s" %
@@ -2972,7 +2972,7 @@ class QuartetJoining(object):
                     chNN.append([n, above, 1])
                 if pN != theTree.root:
                     chNN.append([pN.parent, theTree.nTax - sumOfAboves, 0])
-                chNN = p4.func.sortListOfListsOnListElementNumber(chNN, 1)
+                chNN = DASMC.p4.func.sortListOfListsOnListElementNumber(chNN, 1)
                 chNN.reverse()
 
                 # for chN in chNN:

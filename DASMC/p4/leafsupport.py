@@ -1,9 +1,9 @@
-from p4.p4exceptions import P4Error
-from p4.treepartitions import TreePartitions
-from p4.tree import Tree
-from p4.trees import Trees
-from p4.func import read
-from p4.var import var
+from DASMC.p4.p4exceptions import P4Error
+from DASMC.p4.treepartitions import TreePartitions
+from DASMC.p4.tree import Tree
+from DASMC.p4.trees import Trees
+from DASMC.p4.func import read
+from DASMC.p4.var import var
 import sys
 import csv
 import random

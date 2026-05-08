@@ -1,7 +1,7 @@
 import string
 import os
-from p4.var import var
-from p4.p4exceptions import P4Error
+from DASMC.p4.var import var
+from DASMC.p4.p4exceptions import P4Error
 
 """This class is used by Tree.draw(), and Tree.eps().
 This week, there is no 'user-interface' for it, other than those

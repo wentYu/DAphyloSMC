@@ -4,21 +4,21 @@ import io
 import math
 import copy
 import os
-import p4.func
+import DASMC.p4.func
 import time
 import glob
-from p4.var import var
-from p4.p4exceptions import P4Error
-from p4.node import Node, NodePart, NodeBranch, NodeBranchPart
-from p4.nexustoken import nextTok, safeNextTok
-from p4.distancematrix import DistanceMatrix
+from DASMC.p4.var import var
+from DASMC.p4.p4exceptions import P4Error
+from DASMC.p4.node import Node, NodePart, NodeBranch, NodeBranchPart
+from DASMC.p4.nexustoken import nextTok, safeNextTok
+from DASMC.p4.distancematrix import DistanceMatrix
 
 import numpy
-import p4.pf as pf
-from p4.model import Model
-from p4.data import Data
-from p4.alignment import Part
-from p4.treepicture import TreePicture
+import DASMC.p4.pf as pf
+from DASMC.p4.model import Model
+from DASMC.p4.data import Data
+from DASMC.p4.alignment import Part
+from DASMC.p4.treepicture import TreePicture
 import random
 import pickle
 
@@ -561,12 +561,12 @@ class Tree(object):
 
         tok = safeNextTok(flob, 'Tree.parseNexus()')
         # print 'parseNexus() tok = %s' % tok
-        tok = p4.func.nexusUnquoteName(tok)
+        tok = DASMC.p4.func.nexusUnquoteName(tok)
         if tok == '*':
             print(gm[0])
             print("    Ignoring '*' in tree description")
             tok = safeNextTok(flob, 'Tree.parseNexus()')
-        if not p4.func.nexusCheckName(tok):
+        if not DASMC.p4.func.nexusCheckName(tok):
             gm.append("Bad tree name: '%s'" % tok)
             raise P4Error(gm)
         self.name = tok
@@ -721,7 +721,7 @@ class Tree(object):
             isQuotedTok = True
         # Should generally be the opening paren, except if its a single-node
         # tree.
-        tok = p4.func.nexusUnquoteName(tok)
+        tok = DASMC.p4.func.nexusUnquoteName(tok)
 
         if doModelComments:
             # Turn on var.nexus_getAllCommandComments in order 
@@ -904,7 +904,7 @@ class Tree(object):
                             newNode.br.parts.append(NodeBranchPart())
 
                     newNode.isLeaf = 1
-                    if p4.func.nexusCheckName(tok):
+                    if DASMC.p4.func.nexusCheckName(tok):
                         newNode.name = tok
                         # print 'got newNode.name = %s' % tok
                     else:
@@ -1161,7 +1161,7 @@ class Tree(object):
                 isQuotedTok = True
             else:
                 isQuotedTok = False
-            tok = p4.func.nexusUnquoteName(sTok)
+            tok = DASMC.p4.func.nexusUnquoteName(sTok)
             #print('got tok for next round = %s' % tok)
             # This is the end of the "while tok != ';':" loop
 
@@ -2358,7 +2358,7 @@ class Tree(object):
             for n in self.iterNodesNoRoot():
                 print('%7s     %4s       %4s        %s' % (
                     n.nodeNum, n.br.rawSplitKey, n.br.splitKey, 
-                    p4.func.getSplitStringFromKey(n.br.splitKey, len(self.taxNames))))
+                    DASMC.p4.func.getSplitStringFromKey(n.br.splitKey, len(self.taxNames))))
 
     def recalculateSplitKeysOfNodeFromChildren(self, aNode, allOnes):
         children = [n for n in aNode.iterChildren()]
@@ -3054,7 +3054,7 @@ class Tree(object):
             raise P4Error(gm)
         if metric == 'scqdist':  # no need for taxNames
             try:
-                import p4.scqdist as scqdist
+                import DASMC.p4.scqdist as scqdist
             except ImportError:
                 gm.append("Could not find the 'scqdist' module needed for this metric.")
                 gm.append("See the instructions for making it in the p4 source, in the Qdist directory.")
@@ -3065,7 +3065,7 @@ class Tree(object):
 
         elif metric == 'tqdist':  # no need for taxNames
             try:
-                import p4.pytqdist as pytqdist
+                import DASMC.p4.pytqdist as pytqdist
             except ImportError:
                 gm.append("Could not find the 'tqdist' module needed for this metric.")
                 gm.append("See the instructions for making it in the p4 source, in the tqDist directory.")
@@ -3169,7 +3169,7 @@ class Tree(object):
 
         If you have nexus taxsets defined, you can show them.
         """
-        from p4.btv import TV
+        from DASMC.p4.btv import TV
         #import os
         #os.environ['PYTHONINSPECT'] = '1'
         TV(self)
@@ -3186,7 +3186,7 @@ class Tree(object):
 
         If you have nexus taxsets defined, you can show them.
         """
-        from p4.btv import BTV
+        from DASMC.p4.btv import BTV
         #import os
         #os.environ['PYTHONINSPECT'] = '1'
         BTV(self)
@@ -3221,7 +3221,7 @@ class Tree(object):
         selfHasButTreeBDoesnt = self.splitKeySet.difference(treeB.splitKeySet)
         treeBHasButSelfDoesnt = treeB.splitKeySet.difference(self.splitKeySet)
 
-        from p4.btv import TV
+        from DASMC.p4.btv import TV
         #import os
         #os.environ['PYTHONINSPECT'] = '1'
         TV(self, title='TV self')
@@ -4591,7 +4591,7 @@ class Tree(object):
                 tList.append(t)
 
         # This import needs to be here --- if it is up top as usual, it leads to circular grief.
-        from p4.trees import Trees
+        from DASMC.p4.trees import Trees
         
         tt = Trees(trees=tList, taxNames=self.taxNames)
         return tt
@@ -4989,7 +4989,7 @@ class Tree(object):
         for n in self.nodes:
             if n != self.root:
                 if not n.isLeaf:
-                    theNodeSplitString = p4.func.getSplitStringFromKey(
+                    theNodeSplitString = DASMC.p4.func.getSplitStringFromKey(
                         n.br.splitKey, self.nTax)
                     if theNodeSplitString in theHash:
                         if hasattr(n.br, 'support') and n.br.support is not None:
@@ -5281,7 +5281,7 @@ class Tree(object):
         if dupeNode == self.root and not up:
             print("The dupeNode is self.root, and you want a subtree below that?!?")
             sys.exit()
-        from p4.tree import Tree
+        from DASMC.p4.tree import Tree
         st = Tree()
         if up:
             n = Node()
@@ -6295,7 +6295,7 @@ class Tree(object):
             f.write('  dimensions ntax=%s;\n' % self.nTax)
             f.write('  taxlabels')
             for i in self.taxNames:
-                f.write(' %s' % p4.func.nexusFixNameIfQuotesAreNeeded(i))
+                f.write(' %s' % DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(i))
             f.write(';\nend;\n\n')
 
         f.write('begin trees;\n')
@@ -6306,7 +6306,7 @@ class Tree(object):
                     (self.name, self.logLike))
 
         f.write('  tree %s = [&U] ' %
-                p4.func.nexusFixNameIfQuotesAreNeeded(self.name))
+                DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(self.name))
         if self.recipWeight:
             if self.recipWeight == 1:
                 f.write('[&W 1] ')
@@ -6386,7 +6386,7 @@ class Tree(object):
                     sList.append('%s' % translationHash[self.root.name])
                 elif self.root.name:
                     sList.append(
-                        '%s' % p4.func.nexusFixNameIfQuotesAreNeeded(self.root.name))
+                        '%s' % DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(self.root.name))
                 else:
                     sList.append('()')
             else:
@@ -6420,7 +6420,7 @@ class Tree(object):
                         else:
                             if n1.name:
                                 sList.append(
-                                    '%s' % p4.func.nexusFixNameIfQuotesAreNeeded(n1.name))
+                                    '%s' % DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(n1.name))
                             else:
                                 if n1 != self.root:
                                     gm.append("Terminal node with no name?")
@@ -6429,7 +6429,7 @@ class Tree(object):
                         sList.append(')')
                         if n1.name:
                             sList.append(
-                                '%s' % p4.func.nexusFixNameIfQuotesAreNeeded(n1.name))
+                                '%s' % DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(n1.name))
                     if writeBrLens:
                         if n1 != self.root:
                             sList.append(':%g' % n1.br.len)
@@ -7093,7 +7093,7 @@ class Tree(object):
             mt.val = val
 
         elif spec in var.rMatrixProteinSpecs:
-            mt.val = p4.func.getProteinEmpiricalModelComp(spec)
+            mt.val = DASMC.p4.func.getProteinEmpiricalModelComp(spec)
 
         return mt
 
@@ -8546,7 +8546,7 @@ class Tree(object):
                         fRaw.write('goldman_cox_part%i = %s\n' %
                                    (partNum, goldmanIndividualSimStats[partNum]))
 
-            prob = p4.func.tailAreaProbability(
+            prob = DASMC.p4.func.tailAreaProbability(
                 originalGoldmanCoxStat, goldmanOverallSimStats, verbose=0)[2]
             if doOut:
                 flob.write('\n              Overall Goldman-Cox test: ')
@@ -8560,7 +8560,7 @@ class Tree(object):
                 if doOut:
                     flob.write('  Tests for individual data partitions:\n')
                 for partNum in range(self.data.nParts):
-                    prob = p4.func.tailAreaProbability(originalGoldmanCoxStatsByPart[partNum],
+                    prob = DASMC.p4.func.tailAreaProbability(originalGoldmanCoxStatsByPart[partNum],
                                                     goldmanIndividualSimStats[partNum], verbose=0)[2]
                     if doOut:
                         flob.write(
@@ -8624,8 +8624,8 @@ class Tree(object):
             nRows = len(h['observedIndividualCounts'])
             nCols = len(h['observedIndividualCounts'][0])
             # I could have just used nSites, above
-            theSumOfRows = p4.func._sumOfRows(h['observedIndividualCounts'])
-            theSumOfCols = p4.func._sumOfColumns(h['observedIndividualCounts'])
+            theSumOfRows = DASMC.p4.func._sumOfRows(h['observedIndividualCounts'])
+            theSumOfCols = DASMC.p4.func._sumOfColumns(h['observedIndividualCounts'])
             # print theSumOfCols
             isOk = 1
             columnZeros = []
@@ -8636,7 +8636,7 @@ class Tree(object):
             for j in range(len(theSumOfCols)):
                 if theSumOfCols[j] <= 0.0:
                     columnZeros.append(j)
-            theExpected = p4.func._expected(theSumOfRows, theSumOfCols)
+            theExpected = DASMC.p4.func._expected(theSumOfRows, theSumOfCols)
             # print "theExpected = %s" % theExpected
             # print "columnZeros = %s" % columnZeros
             xSq = 0.0
@@ -8656,7 +8656,7 @@ class Tree(object):
                     xSq += xSq_row
             dof = (nCols - len(columnZeros) - 1) * \
                 (nRows - len(skipTaxNums[pNum]) - 1)
-            prob = p4.func.chiSquaredProb(xSq, dof)
+            prob = DASMC.p4.func.chiSquaredProb(xSq, dof)
             if doOut:
                 flob.write(
                     '        Part %i: Chi-square = %f, (dof=%i) P = %f\n' % (pNum, xSq, dof, prob))
@@ -8759,7 +8759,7 @@ class Tree(object):
                 flob.write(
                     '\nAssessment of fit from null distribution from %i simulations\n' % nSims)
                 flob.write('%s%30s:  ' % (spacer1, 'Overall'))
-            prob = p4.func.tailAreaProbability(
+            prob = DASMC.p4.func.tailAreaProbability(
                 h['overallStat'], h['overallSimStats'], verbose=0)[2]
             if doOut:
                 if prob <= 0.05:
@@ -8778,7 +8778,7 @@ class Tree(object):
                     if doOut:
                         flob.write('%13s\n' % 'skipped.')
                 else:
-                    prob = p4.func.tailAreaProbability(h['individualStats'][taxNum],
+                    prob = DASMC.p4.func.tailAreaProbability(h['individualStats'][taxNum],
                                                     h['individualSimStats'][taxNum], verbose=0)[2]
                     if doOut:
                         if prob <= 0.05:
@@ -9009,7 +9009,7 @@ class Tree(object):
         partTaps = []
         for pNum in range(self.data.nParts):
             partTaps.append(
-                p4.func.tailAreaProbability(original[pNum][0], full[pNum], verbose=0)[2])
+                DASMC.p4.func.tailAreaProbability(original[pNum][0], full[pNum], verbose=0)[2])
         #print("partTaps is ", partTaps)
         # Intro
         if verbose:
@@ -9055,7 +9055,7 @@ class Tree(object):
                 print(headSig % self.data.taxNames[tNum], end=' ')
                 for pNum in range(self.data.nParts):
                     if tNum not in skips[pNum]:
-                        ret = p4.func.tailAreaProbability(
+                        ret = DASMC.p4.func.tailAreaProbability(
                             original[pNum][3][tNum], rows[pNum][tNum], verbose=0)[2]
                         print(('%6.4f' % ret).center(partWid), end=' ')
                     else:
@@ -9067,7 +9067,7 @@ class Tree(object):
                         # degrees of freedom
                         dof = self.data.parts[pNum].dim - 1
                         if tNum not in skips[pNum]:
-                            ret = p4.func.chiSquaredProb(
+                            ret = DASMC.p4.func.chiSquaredProb(
                                 original[pNum][3][tNum], dof)
                             print(('(%6.4f)' % ret).center(partWid), end=' ')
                         else:
@@ -9442,46 +9442,22 @@ class Tree(object):
             gm.append("    theTree.data = theData")
             raise P4Error(gm)
 
-        #print("self.cTree = %s" % self.cTree)
         if not self.cTree:
             # This calls self.modelSanityCheck(), which calls
             # self.setEmpiricalComps()
             self._allocCStuff(resetEmpiricalComps=resetEmpiricalComps)
-        #print("About to self.model.setCStuff()")
         self.model.setCStuff()
-        #print("About to self.setCStuff()")
         self.setCStuff()
-        #print("about to p4_setPrams()...")
         pf.p4_setPrams(self.cTree, -1)  # "-1" means do all parts
-        #print("finished _commonCStuff()")
 
-    def calcLogLike(self, verbose=1, resetEmpiricalComps=True,SingleSite=False):
+    def calcLogLike(self, verbose=1, resetEmpiricalComps=True):
         """Calculate the likelihood of the tree, without optimization."""
         self._commonCStuff(resetEmpiricalComps=resetEmpiricalComps)
-        # print("about to p4_treeLogLike()...")
         # second arg is getSiteLikes
-        start = time.time()
         self.logLike = pf.p4_treeLogLike(self.cTree, 0)
-        end = time.time()
-        # print('origin_time:', end - start)
         if verbose:
             print("Tree.calcLogLike(). %f" % self.logLike)
         return self.logLike
-
-
-    # def calcLogLikeByDL(self, verbose=1, resetEmpiricalComps=True):
-    #     """Calculate the likelihood of the tree, without optimization."""
-    #
-    #     self._commonCStuff(resetEmpiricalComps=resetEmpiricalComps)
-    #     # print("about to p4_treeLogLike()...")
-    #     # second arg is getSiteLikes
-    #     tree=self.writeNewick(fName=None, toString=True)
-    #     metric=self.toMetric(ete3.Tree(tree))
-    #     align=[i.sequence for i in self.data.alignments[0].sequences]
-    #     self.logLike = self.DL_loglike(align,metric)
-    #     if verbose:
-    #         print("Tree.calcLogLike(). %f" % self.logLike)
-    #     return self.logLike
 
 
     def optLogLike(self, verbose=1, method="BOBYQA", optBrLens=True):
@@ -9647,7 +9623,7 @@ class Tree(object):
         """
 
         if refTree:
-            from p4.tree import Tree
+            from DASMC.p4.tree import Tree
             assert isinstance(refTree, Tree)
             assert refTree.model
             assert refTree.data

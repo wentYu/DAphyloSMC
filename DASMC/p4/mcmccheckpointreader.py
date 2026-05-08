@@ -1,10 +1,10 @@
 import os
-import p4.func
+import DASMC.p4.func
 import pickle
 import math
 import numpy
 import glob
-from p4.p4exceptions import P4Error
+from DASMC.p4.p4exceptions import P4Error
 
 
 class McmcCheckPointReader(object):
@@ -88,7 +88,7 @@ class McmcCheckPointReader(object):
                     f.close()
                     self.mm.append(m)
 
-                self.mm = p4.func.sortListOfObjectsOn2Attributes(
+                self.mm = DASMC.p4.func.sortListOfObjectsOn2Attributes(
                     self.mm, "gen", 'runNum')
         else:
             # get the file by name
@@ -176,9 +176,9 @@ class McmcCheckPointReader(object):
                 #    print i
                 print(" %10i " % m.treePartitions.nTrees)
 
-        asdos, maxDiff, meanDiff = p4.func._compareSplitsBetweenTwoTreePartitions(
+        asdos, maxDiff, meanDiff = DASMC.p4.func._compareSplitsBetweenTwoTreePartitions(
             tp1, tp2, minimumProportion, verbose=verbose)
-        asdos2, maxDiff2, meanDiff2= p4.func._compareSplitsBetweenTwoTreePartitions(
+        asdos2, maxDiff2, meanDiff2= DASMC.p4.func._compareSplitsBetweenTwoTreePartitions(
             tp2, tp1, minimumProportion, verbose=False)
         if math.fabs(asdos - asdos2) > 0.000001:
             print("Reciprocal assdos differs:  %s  %s" % (asdos, asdos2))
@@ -200,7 +200,7 @@ class McmcCheckPointReader(object):
 
         """
         tpp = [m.treePartitions for m in self.mm]
-        p4.func.compareSplitsBetweenTreePartitions(tpp, precision=precision, linewidth=linewidth)
+        DASMC.p4.func.compareSplitsBetweenTreePartitions(tpp, precision=precision, linewidth=linewidth)
 
     def writeProposalAcceptances(self):
         for m in self.mm:

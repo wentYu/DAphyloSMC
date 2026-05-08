@@ -2,10 +2,10 @@ import os
 import sys
 import string
 import copy
-from p4.var import var
-from p4.nexustoken import nexusSkipPastNextSemiColon, safeNextTok
-import p4.func
-from p4.p4exceptions import P4Error
+from DASMC.p4.var import var
+from DASMC.p4.nexustoken import nexusSkipPastNextSemiColon, safeNextTok
+import DASMC.p4.func
+from DASMC.p4.p4exceptions import P4Error
 
 
 # [Examples from the paup manual,
@@ -269,11 +269,11 @@ class NexusSets(object):
         gm = ['NexusSets._readCharSetCommand()']
         if hasattr(flob, 'name') and flob.name:
             gm.append("file name %s" % flob.name)
-        name = p4.func.nexusUnquoteName(
+        name = DASMC.p4.func.nexusUnquoteName(
             safeNextTok(flob, 'NexusSets: _readCharSetCommand'))
         # print "readCharSetCommand: got name '%s'" % name
         lowName = name.lower()
-        if not p4.func.nexusCheckName(lowName):
+        if not DASMC.p4.func.nexusCheckName(lowName):
             gm.append("Bad charSet name '%s'" % name)
             raise P4Error(gm)
 
@@ -302,11 +302,11 @@ class NexusSets(object):
         gm = ['NexusSets._readTaxSetCommand()']
         if hasattr(flob, 'name') and flob.name:
             gm.append("file name %s" % flob.name)
-        name = p4.func.nexusUnquoteName(
+        name = DASMC.p4.func.nexusUnquoteName(
             safeNextTok(flob, 'NexusSets: readTaxSetCommand'))
         # print "readTaxSetCommand: got name '%s'" % name
         lowName = name.lower()
-        if not p4.func.nexusCheckName(lowName):
+        if not DASMC.p4.func.nexusCheckName(lowName):
             gm.append("Bad taxSet name '%s'" % name)
             raise P4Error(gm)
 
@@ -329,10 +329,10 @@ class NexusSets(object):
         gm = ['NexusSets._readCharPartitionCommand()']
         if hasattr(flob, 'name') and flob.name:
             gm.append("file name %s" % flob.name)
-        name = p4.func.nexusUnquoteName(safeNextTok(flob, gm[0]))
+        name = DASMC.p4.func.nexusUnquoteName(safeNextTok(flob, gm[0]))
         # print "readCharPartitionCommand: got name '%s'" % name
         lowName = name.lower()
-        if not p4.func.nexusCheckName(lowName):
+        if not DASMC.p4.func.nexusCheckName(lowName):
             gm.append("Bad charPartition name '%s'" % name)
 
         if lowName in self.charPartitionLowNames:
@@ -366,7 +366,7 @@ class NexusSets(object):
         for cp in self.charPartitions:
             cp.dump()
         if self.charPartition:
-            print("            self.charPartition.name is %s" % p4.func.nexusFixNameIfQuotesAreNeeded(self.charPartition.name))
+            print("            self.charPartition.name is %s" % DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(self.charPartition.name))
         else:
             print("            There is no self.charPartition")
 
@@ -490,7 +490,7 @@ class TaxOrCharSet(object):
             pass
         elif lowTok == '(':
             #['standard', 'vector']:
-            tok = p4.func.nexusUnquoteName(safeNextTok(flob, gm[0]))
+            tok = DASMC.p4.func.nexusUnquoteName(safeNextTok(flob, gm[0]))
             lowTok = tok.lower()
             if lowTok == 'standard':
                 pass
@@ -501,7 +501,7 @@ class TaxOrCharSet(object):
                 gm.append("(I was expecting either 'standard' or")
                 gm.append("'vector' following the parenthesis.)")
                 raise P4Error(gm)
-            tok = p4.func.nexusUnquoteName(safeNextTok(flob, gm[0]))
+            tok = DASMC.p4.func.nexusUnquoteName(safeNextTok(flob, gm[0]))
             if tok == ')':
                 pass
             else:
@@ -509,7 +509,7 @@ class TaxOrCharSet(object):
                 gm.append(
                     "(I was expecting an unparentheis after '%s')" % self.format)
                 raise P4Error(gm)
-            tok = p4.func.nexusUnquoteName(safeNextTok(flob, gm[0]))
+            tok = DASMC.p4.func.nexusUnquoteName(safeNextTok(flob, gm[0]))
             if tok != '=':
                 gm.append("Unexpected '%s'" % tok)
                 gm.append("I was expecting an '=' after '(%s)'" % self.format)
@@ -519,11 +519,11 @@ class TaxOrCharSet(object):
             raise P4Error(gm)
 
         # Now we are on the other side of the '='
-        tok = p4.func.nexusUnquoteName(safeNextTok(flob, gm[0]))
+        tok = DASMC.p4.func.nexusUnquoteName(safeNextTok(flob, gm[0]))
         lowTok = tok.lower()
         while lowTok not in [None, ';', 'end', 'endblock']:
             self.tokens.append(tok)
-            tok = p4.func.nexusUnquoteName(safeNextTok(flob, gm[0]))
+            tok = DASMC.p4.func.nexusUnquoteName(safeNextTok(flob, gm[0]))
             lowTok = tok.lower()
 
         if self.format == 'vector':
@@ -848,7 +848,7 @@ class TaxOrCharSet(object):
             flob.write('  %s %s =' % (theSetName, self.name))
             if self.useTaxNames:
                 for tN in self.taxNames:
-                    flob.write(" %s" % p4.func.nexusFixNameIfQuotesAreNeeded(tN))
+                    flob.write(" %s" % DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(tN))
             else:
                 # for i in self.tokens:
                 #    flob.write(' %s' % i)
@@ -856,7 +856,7 @@ class TaxOrCharSet(object):
                 for theTok in self.tokens:
                     if isinstance(theTok, str):
                         if theTok not in ['-', '\\']:
-                            tok = p4.func.nexusFixNameIfQuotesAreNeeded(theTok)
+                            tok = DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(theTok)
                         else:
                             tok = theTok
                     else:
@@ -1105,7 +1105,7 @@ class CharPartitionSubset(object):
 
     def dump(self):
         print("                              -- CharPartitionSubset")
-        print("                                         name: %s" % p4.func.nexusFixNameIfQuotesAreNeeded(self.name))
+        print("                                         name: %s" % DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(self.name))
         print("                                     triplets: ")
         for t in self.triplets:
             print("                                               %s" % t)
@@ -1149,11 +1149,11 @@ class CharPartition(object):
         gm = ['CharPartition._readCharPartitionDefinition()']
         if hasattr(flob, 'name') and flob.name:
             gm.append("file name %s" % flob.name)
-        tok = p4.func.nexusUnquoteName(safeNextTok(flob, gm[0]))
+        tok = DASMC.p4.func.nexusUnquoteName(safeNextTok(flob, gm[0]))
         lowTok = tok.lower()
         while lowTok != '=':
             if lowTok == '(':
-                tok = p4.func.nexusUnquoteName(safeNextTok(flob, gm[0]))
+                tok = DASMC.p4.func.nexusUnquoteName(safeNextTok(flob, gm[0]))
                 lowTok = tok.lower()
                 while lowTok != ')':
                     if lowTok in ['notokens', 'vector']:
@@ -1170,7 +1170,7 @@ class CharPartition(object):
                         gm.append(
                             "(Only 'tokens' and 'standard' are implemented.)")
                         raise P4Error(gm)
-                    tok = p4.func.nexusUnquoteName(safeNextTok(flob, gm[0]))
+                    tok = DASMC.p4.func.nexusUnquoteName(safeNextTok(flob, gm[0]))
                     lowTok = tok.lower()
             else:
                 gm.append("Got unexpected token: '%s'" % tok)
@@ -1178,11 +1178,11 @@ class CharPartition(object):
                     "I was expecting either an '=' or something in parentheses.")
                 raise P4Error(gm)
 
-        tok = p4.func.nexusUnquoteName(safeNextTok(flob, gm[0]))
+        tok = DASMC.p4.func.nexusUnquoteName(safeNextTok(flob, gm[0]))
         lowTok = tok.lower()
         while lowTok not in [None, ';', 'end', 'endblock']:
             self.tokens.append(tok)
-            tok = p4.func.nexusUnquoteName(safeNextTok(flob, gm[0]))
+            tok = DASMC.p4.func.nexusUnquoteName(safeNextTok(flob, gm[0]))
             lowTok = tok.lower()
 
         # print "_readCharPartitionDefinition: tokens %s" % self.tokens
@@ -1192,7 +1192,7 @@ class CharPartition(object):
         while i < len(self.tokens):
             aSubset = CharPartitionSubset()
             aSubset.name = self.tokens[i]
-            if not p4.func.nexusCheckName(aSubset.name):
+            if not DASMC.p4.func.nexusCheckName(aSubset.name):
                 gm.append("CharPartition '%s' definition:" % self.name)
                 gm.append("Bad subset name (%s, I think)" % aSubset.name)
                 raise P4Error(gm)
@@ -1564,7 +1564,7 @@ class CharPartition(object):
             gm.append("the entire sequence.  Hopefully that is intentional.")
 
     def dump(self):
-        print("                CharPartition:     name: %s" % p4.func.nexusFixNameIfQuotesAreNeeded(self.name))
+        print("                CharPartition:     name: %s" % DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(self.name))
         # ' '.join(self.tokens)
         print("                                 tokens: %s" % self.tokens)
         # for t in self.tokens:

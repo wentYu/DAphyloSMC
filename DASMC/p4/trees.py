@@ -1,10 +1,10 @@
 import sys
 import os
 import math
-import p4.func
-from p4.var import var
-from p4.tree import Tree
-from p4.p4exceptions import P4Error
+import DASMC.p4.func
+from DASMC.p4.var import var
+from DASMC.p4.tree import Tree
+from DASMC.p4.p4exceptions import P4Error
 
 
 class Trees(object):
@@ -229,7 +229,7 @@ class Trees(object):
                 f.write('  dimensions ntax=%s;\n' % self.nTax)
                 f.write('  taxlabels')
                 for tN in self.taxNames:
-                    f.write(' %s' % p4.func.nexusFixNameIfQuotesAreNeeded(tN))
+                    f.write(' %s' % DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(tN))
                 f.write(';\nend;\n\n')
             else:
                 gm.append(
@@ -243,9 +243,9 @@ class Trees(object):
             f.write('    translate\n')
             for i in range(self.nTax - 1):
                 f.write('        %3i %s,\n' % (
-                    i + 1, p4.func.nexusFixNameIfQuotesAreNeeded(self.taxNames[i])))
+                    i + 1, DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(self.taxNames[i])))
             f.write('        %3i %s\n' % (
-                self.nTax, p4.func.nexusFixNameIfQuotesAreNeeded(self.taxNames[-1])))
+                self.nTax, DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(self.taxNames[-1])))
             f.write('    ;\n')
 
         # write the models comment
@@ -278,7 +278,7 @@ class Trees(object):
                         (t.name, t.logLike))
 
             f.write('    tree %s = [&U] ' %
-                    p4.func.nexusFixNameIfQuotesAreNeeded(t.name))
+                    DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(t.name))
             if t.recipWeight:
                 # if t.recipWeight == 1:
                 #    f.write('[&W 1] ')
@@ -326,7 +326,7 @@ class Trees(object):
         object.  (If no trees are found, it returns an empty list.)
         """
 
-        sk = p4.func.getSplitKeyFromTaxNames(self.taxNames, someTaxa)
+        sk = DASMC.p4.func.getSplitKeyFromTaxNames(self.taxNames, someTaxa)
         foundTrees = []
         for t in self.trees:
             t.makeSplitKeys()
@@ -355,7 +355,7 @@ class Trees(object):
         different metrics.  
         """
 
-        from p4.distancematrix import DistanceMatrix
+        from DASMC.p4.distancematrix import DistanceMatrix
         d = DistanceMatrix()
         d.names = []
         for t in self.trees:
@@ -509,7 +509,7 @@ class Trees(object):
         # order by counts
         skl = skd.values()
         # print("skl =", skl)
-        skl = p4.func.sortListOfObjectsOnAttribute(skl, "count")
+        skl = DASMC.p4.func.sortListOfObjectsOnAttribute(skl, "count")
         skl.reverse()
         # print("skl =", skl)
 
@@ -578,7 +578,7 @@ class Trees(object):
         # Check if consel is installed
         progs = ['makermt', 'consel', 'catpv']
         for progName in progs:
-            if p4.func.which2(progName):
+            if DASMC.p4.func.which2(progName):
                 pass
             else:
                 gm.append("The programs")
@@ -925,7 +925,7 @@ class Trees(object):
                 t.splitKeys = [n.br.splitKey for n in t.iterNodesNoRoot()]
                 # print '\nsplitKeys = %s' % t.splitKeys
 
-        from p4.treepartitions import TreePartitions
+        from DASMC.p4.treepartitions import TreePartitions
 
         # The root buisiness is not implemented yet.  The way I do it
         # should be guided by theTree, the reference tree.  It is rooted
@@ -998,7 +998,7 @@ class Trees(object):
                     if n.rootCount > maxRootCount:
                         maxRootCount = n.rootCount
             print("non-bi-root maxRootCount is %i" % maxRootCount)
-            nodesInOrder = p4.func.sortListOfObjectsOnAttribute(nodesList, 'rootCount')
+            nodesInOrder = DASMC.p4.func.sortListOfObjectsOnAttribute(nodesList, 'rootCount')
             nodesInOrder.reverse()
             sumRootCount = 0
             print("node     rootCount")
@@ -1023,7 +1023,7 @@ class Trees(object):
                         maxRootCount = n.br.biRootCount
             print("bi-root maxRootCount is %i" % maxRootCount)
             tList = [[n.nodeNum, n.br.biRootCount] for n in nodesList]
-            nodeNumsInOrder = p4.func.sortListOfListsOnListElementNumber(tList, 1)
+            nodeNumsInOrder = DASMC.p4.func.sortListOfListsOnListElementNumber(tList, 1)
             nodeNumsInOrder.reverse()
             sumBiRootCount = 0
             print("node     biRootCount")

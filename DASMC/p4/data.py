@@ -1,11 +1,11 @@
-from p4.alignment import Alignment
+from DASMC.p4.alignment import Alignment
 import sys
 import time
 import os
-import p4.pf as pf
-import p4.func
-from p4.var import var
-from p4.p4exceptions import P4Error
+import DASMC.p4.pf as pf
+import DASMC.p4.func
+from DASMC.p4.var import var
+from DASMC.p4.p4exceptions import P4Error
 
 
 class Data:
@@ -550,8 +550,8 @@ class Data:
             nRows = len(comps)
             nCols = len(comps[0])
             # I could have just kept nSites, above
-            theSumOfRows = p4.func._sumOfRows(comps)
-            theSumOfCols = p4.func._sumOfColumns(comps)
+            theSumOfRows = DASMC.p4.func._sumOfRows(comps)
+            theSumOfCols = DASMC.p4.func._sumOfColumns(comps)
             # print theSumOfCols
             isOk = 1
             columnZeros = []
@@ -571,7 +571,7 @@ class Data:
                         isOk = 0
                         nColumnZeros += 1
 
-            theExpected = p4.func._expected(theSumOfRows, theSumOfCols)
+            theExpected = DASMC.p4.func._expected(theSumOfRows, theSumOfCols)
             # print "theExpected = ", theExpected
             # print "columnZeros = ", columnZeros
             if isOk:

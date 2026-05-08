@@ -1,8 +1,8 @@
-from p4.tree import Tree
-from p4.node import Node
-from p4.func import read
-from p4.var import var
-from p4.p4exceptions import P4Error
+from DASMC.p4.tree import Tree
+from DASMC.p4.node import Node
+from DASMC.p4.func import read
+from DASMC.p4.var import var
+from DASMC.p4.p4exceptions import P4Error
 
 import sys
 import csv
@@ -2714,7 +2714,7 @@ class CompatibleTreePairs(TreeHandler):
 
     def createCompatibleTreePairs(self, readCSV=True, csvInFile='clades.csv', writeCSV=False, csvOutFile='treeMatrix.csv', writeNexus=True, nexusFilename='compatiblePair', calcDistances=False, distanceMeasure='sd'):
 
-        from p4.trees import Trees
+        from DASMC.p4.trees import Trees
 
         self.splits, treeNames = self.updateToCommonLeafSet(self.tfl)
 
@@ -3462,7 +3462,7 @@ class Reduced(TreeHandler):
 
     def reducedMemQuick(self):
 
-        from p4.LeafSupport import TreeSubsets
+        from DASMC.p4.LeafSupport import TreeSubsets
         print('Running divide and conquer to speed things up')
         sys.stdout.flush()
         ts = TreeSubsets(self.trees)
@@ -3603,7 +3603,7 @@ class Reduced(TreeHandler):
         # translate partial splits into full splits using taxonSet2taxonNames
         # and taxname2bitkey
 
-        from p4.LeafSupport import TreeSubsets
+        from DASMC.p4.LeafSupport import TreeSubsets
         print('Running divide and conquer to speed things up')
         sys.stdout.flush()
         ts = TreeSubsets(self.trees)

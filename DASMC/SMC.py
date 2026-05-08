@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import DASMC
+
 import os
 
 os.environ["OMP_NUM_THREADS"] = "1"
@@ -27,13 +27,14 @@ import gc
 from multiprocessing import Pool
 
 import numpy
-import psutil
 from scipy.stats import gaussian_kde
 
 os.environ['QT_QPA_PLATFORM'] = 'offscreen'
 import random
-import p4
-from p4.var import var
+from DASMC import p4
+from DASMC.p4 import var,Mcmc,Chain
+# import p4
+# from p4.var import var
 import scipy.stats
 from scipy.special import logsumexp, gammaln
 from ete3 import Tree, TreeStyle
@@ -41,19 +42,16 @@ import numpy as np
 
 np.seterr(divide='ignore')
 from scipy.linalg import expm
-import matplotlib.pyplot as plt
 import pandas as pd
 import dendropy
 from dendropy.calculate import treecompare
-import time
 import argparse
 import re
 import sumt
 from joblib import load
-import math
 import warnings
 
-from Feature_test2 import TreeToVector
+from DASMC.Tree2Vector import TreeToVector
 from collections import OrderedDict
 
 ATCG_dict = {'a': 0, 't': 1, 'c': 2, 'g': 3}
@@ -752,7 +750,7 @@ def calculate_parallel(pool, data):
     return pool.map(calculate, data, chunksize=10)
 
 
-def SMC(kappa, alpha, base_frequency, prior_lambda=10, etbrPExt=0.6, proposal_kappa_prob=0.02, proposal_pi_prob=0.01,
+def SMC(kappa, alpha, base_frequency, prior_lambda=10, etbrPExt=0.6, proposal_kappa_prob=0.02, proposal_pi_prob=0.02,
         brLen_prob=0.5,
         nParticles=50, iterations=20000, dataset='primates', mark='0', feature=0, output_feature=0, output_vector=0,
         self_adaptive=1,
@@ -762,17 +760,17 @@ def SMC(kappa, alpha, base_frequency, prior_lambda=10, etbrPExt=0.6, proposal_ka
     print('\nsettings:')
 
     print('\n--global settings--')
-    print('a pilot run or a formal run (1 for pilot run)? ', feature)
+    print('a pilot run or a formal DA-SMC run (1 for pilot run)? ', feature)
     if feature:
         print('need to output the features? ', bool(output_feature))
-    print('run on which dataset (your input file should be like "dataset.nex", or include a relative path, e.g., "examples/primates" for "examples/primates.nex".): ', dataset)
+    print('run on which dataset (your input file should be exactly "dataset.nex"): ', dataset)
     print('identifier for this set of works: ', mark)
-    print('which turn is it in the repeated run (if have)? ', turn)
+    print('which turn is it in the repeated run (Optional, usually used in formal DA-SMC, not pilot run)? ', turn)
     print('random seed (0 means using default seeds): ', random_seed)
     print('open the Developer check mode? ', check)
 
     print('\n--proposal settings--')
-    print('use model SYM: ', bool(gtr))
+    print('use model SYM or GTR: ', bool(gtr))
     print('probability of evolution rate parameters proposal (set to 0 if use model JC69): ', proposal_kappa_prob)
     print('probability of base frequency parameters proposal: ', proposal_pi_prob)
     if gtr == 0:
@@ -788,6 +786,9 @@ def SMC(kappa, alpha, base_frequency, prior_lambda=10, etbrPExt=0.6, proposal_ka
     print('nucleobase frequency (A,T,C,G): ', base_frequency)
     print('branch length exponential prior lambda: ', prior_lambda)
     print('eSPR extend probability: ', etbrPExt)
+    if feature:
+        self_adaptive=0
+        print('We do not recommend a self-adaptive pilot run due to its uncertainty in length.')
     print('use self-adaptive SMC: ', bool(self_adaptive))
     if self_adaptive:
         print('self-adaptive SMC temperature controller alpha: ', alpha)
@@ -893,7 +894,7 @@ def SMC(kappa, alpha, base_frequency, prior_lambda=10, etbrPExt=0.6, proposal_ka
         newick_tree_list[k] = Tree(t.writeNewick(toString=True, spaceAfterComma=False))
         if output_vector:
             vector_list.append(TreeToVector(newick_tree_list[k]))
-        mcmc_list.append(p4.Mcmc(t, nChains=1, runNum=0, sampleInterval=500, checkPointInterval=250000))
+        mcmc_list.append(Mcmc(t, nChains=1, runNum=0, sampleInterval=500, checkPointInterval=250000))
         mcmc_list[k].prob.brLen = 0
         mcmc_list[k].prob.allBrLens = brLen_prob
         mcmc_list[k].prob.local = 0
@@ -901,7 +902,7 @@ def SMC(kappa, alpha, base_frequency, prior_lambda=10, etbrPExt=0.6, proposal_ka
         mcmc_list[k].prob.NNI = 1
         mcmc_list[k].prob.eSPR = 1
         mcmc_list[k]._makeProposals()
-        chain_list.append(p4.Chain(mcmc_list[k]))
+        chain_list.append(Chain(mcmc_list[k]))
         chain_list[k].curTree = t.dupe()
         chain_list[k].curTree.data = d
         chain_list[k].propTree = chain_list[k].curTree.dupe()
@@ -1943,6 +1944,7 @@ def SMC(kappa, alpha, base_frequency, prior_lambda=10, etbrPExt=0.6, proposal_ka
     sumt_command = '--con --biplen -i ' + newick_path + ' -n -q --informat newick'
     sumt.main(sumt_command.split())
 
+    os.rename(newick_path[15:-7] + '.con', newick_path[:-7] + '.con')
     sumt_newick = ''
     with open(newick_path[:-7] + '.con', 'r') as f:
         for one in re.split(string=f.readlines()[3].split('= ')[-1], pattern=r'\[[^]]+\]'):
@@ -2023,10 +2025,10 @@ def main():
     parser.add_argument('-f', '--feature', default=0)
     parser.add_argument('-of', '--output_feature', default=1)
     parser.add_argument('-ov', '--output_vector', default=0)
-    parser.add_argument('-s', '--self_adaptive', default=1)
+    parser.add_argument('-s', '--self_adaptive', default=0)
     parser.add_argument('-e', '--etbrPExt', default=0.6)
-    parser.add_argument('-K', '--K', default=-50)
-    parser.add_argument('-del', '--delta', default=5)
+    parser.add_argument('-K', '--K', default=-200)
+    parser.add_argument('-del', '--delta', default=0)
     parser.add_argument('-c', '--check', default=0)
     parser.add_argument('-r', '--reference', default=0)
     parser.add_argument('-R', '--pilotRF', default=0.0)

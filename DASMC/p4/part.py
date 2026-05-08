@@ -1,7 +1,7 @@
-from p4.p4exceptions import P4Error
-import p4.pf as pf
-import p4.func
-from p4.var import var
+from DASMC.p4.p4exceptions import P4Error
+import DASMC.p4.pf as pf
+import DASMC.p4.func
+from DASMC.p4.var import var
 
 
 class Part:

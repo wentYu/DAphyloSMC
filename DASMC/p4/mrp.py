@@ -1,12 +1,12 @@
 # Matrix representation / parsimony.
 
-from p4.tree import Tree
-from p4.alignment import Alignment
-from p4.p4exceptions import P4Error
-import p4.func
-from p4.nexussets import CharSet
-from p4.node import Node
-from p4.treepartitions import TreePartitions
+from DASMC.p4.tree import Tree
+from DASMC.p4.alignment import Alignment
+from DASMC.p4.p4exceptions import P4Error
+import DASMC.p4.func
+from DASMC.p4.nexussets import CharSet
+from DASMC.p4.node import Node
+from DASMC.p4.treepartitions import TreePartitions
 
 
 "See also Alignment.mrpSlice()"
@@ -107,7 +107,7 @@ def mrp(trees, taxNames=None):
         gm = ["mrp().  No splits were found in the input trees."]
         gm.append("That does not work.")
         raise P4Error(gm)
-    a = p4.func.newEmptyAlignment(
+    a = DASMC.p4.func.newEmptyAlignment(
         dataType='standard', symbols='01', taxNames=taxNames, length=nSplits)
     a.setNexusSets()
     for s in a.sequences:

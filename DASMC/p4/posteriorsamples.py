@@ -1,7 +1,7 @@
-from p4.p4exceptions import P4Error
-from p4.tree import Tree
-import p4.nexus
-from p4.var import var
+from DASMC.p4.p4exceptions import P4Error
+from DASMC.p4.tree import Tree
+import DASMC.p4.nexus
+from DASMC.p4.var import var
 
 import os
 import string
@@ -187,7 +187,7 @@ class PosteriorSamples(object):
         
         translateFlob = io.StringIO(' '.join(translateLines))
 
-        nx = p4.nexus.Nexus()
+        nx = DASMC.p4.nexus.Nexus()
         self.translationHash = nx.readTranslateCommand(translateFlob)
         #print(self.translationHash)
 
@@ -371,7 +371,7 @@ class PosteriorSamples(object):
 
         translateFlob = io.StringIO(' '.join(translateLines))
 
-        nx = p4.nexus.Nexus()
+        nx = DASMC.p4.nexus.Nexus()
         self.translationHash = nx.readTranslateCommand(translateFlob)
         # print self.translationHash
 

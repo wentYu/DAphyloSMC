@@ -1,6 +1,6 @@
 import string
-from p4.tree import Tree
-from p4.node import Node
+from DASMC.p4.tree import Tree
+from DASMC.p4.node import Node
 
 
 class Aho(object):

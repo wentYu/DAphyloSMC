@@ -1,10 +1,10 @@
-import p4.pf as pf
+import DASMC.p4.pf as pf
 import sys
 import random
 import math
-import p4.func
-from p4.var import var
-from p4.p4exceptions import P4Error
+import DASMC.p4.func
+from DASMC.p4.var import var
+from DASMC.p4.p4exceptions import P4Error
 import numpy
 
 
@@ -308,7 +308,7 @@ class ModelPart(object):
         # Get rMatrix
         r = self.rMatrices[rMatrixNum]
         if r.spec in var.rMatrixProteinSpecs:
-            rVal = p4.func.getProteinEmpiricalModelRMatrix(r.spec, upperTriangle=False) # full r matrix
+            rVal = DASMC.p4.func.getProteinEmpiricalModelRMatrix(r.spec, upperTriangle=False) # full r matrix
         else:
             # print(r.val)
             assert isinstance(r.val, numpy.ndarray)
@@ -416,7 +416,7 @@ class Model(object):
                             theseSymbols = mp.symbols
                         else:
                             theseSymbols = '?' * mp.dim
-                        p4.func._writeCharFreqToOpenFile(
+                        DASMC.p4.func._writeCharFreqToOpenFile(
                             c.val, mp.dim, theseSymbols, sys.stdout, offset=15)
                         print(" %s]" % c.spec)
                     else:
@@ -457,7 +457,7 @@ class Model(object):
                         print("%6s part %i, num %i" % ('', pNum, i))
                         print(" " * 15, end='')
                         if mp.dim > 2:
-                            p4.func._writeRMatrixTupleToOpenFile(
+                            DASMC.p4.func._writeRMatrixTupleToOpenFile(
                                 c.val, mp.dim, sys.stdout, offset=15)
                         elif mp.dim == 2:
                             print("dim = 2.  No free values")

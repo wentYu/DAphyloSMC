@@ -1,8 +1,8 @@
 import sys
 import os
-import p4.func
-from p4.var import var
-from p4.p4exceptions import P4Error
+import DASMC.p4.func
+from DASMC.p4.var import var
+from DASMC.p4.p4exceptions import P4Error
 
 
 class DistanceMatrix:
@@ -110,7 +110,7 @@ class DistanceMatrix:
             f.write('  taxlabels')
             for i in range(self.dim):
                 f.write(' %s' %
-                        p4.func.nexusFixNameIfQuotesAreNeeded(self.names[i]))
+                        DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(self.names[i]))
             f.write(';\n')
             f.write('end;\n\n')
 
@@ -153,7 +153,7 @@ class DistanceMatrix:
             if self.names:
                 f.write('  ')
                 f.write(nameFormat %
-                        p4.func.nexusFixNameIfQuotesAreNeeded(self.names[i]))
+                        DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(self.names[i]))
             for j in range(self.dim):
                 #f.write('%10.6f' % self.matrix[i][j])
                 f.write(numberFormat % self.matrix[i][j])
@@ -233,7 +233,7 @@ class DistanceMatrix:
             if self.names:
                 f.write('  ')
                 f.write(nameFormat %
-                        p4.func.nexusFixNameIfQuotesAreNeeded(self.names[i]))
+                        DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(self.names[i]))
             for j in range(self.dim):
                 #f.write('%10.6f' % self.matrix[i][j])
                 if self.matrix[i][j] != None:
@@ -338,12 +338,12 @@ class DistanceMatrix:
         #    theDir = pathPrefix
         # else:
         #    theDir = None
-        flob_dm, dmFName_fq = p4.func.uniqueFile('tmp.dm')
+        flob_dm, dmFName_fq = DASMC.p4.func.uniqueFile('tmp.dm')
         # tempfile.mkstemp(suffix='tree', dir=theDir)
-        flob_tf, treeFName_fq = p4.func.uniqueFile('tmp.tree')
+        flob_tf, treeFName_fq = DASMC.p4.func.uniqueFile('tmp.tree')
         flob_tf.close()
         # tempfile.mkstemp(suffix='cmds', dir=theDir)
-        flob_pf, pFName = p4.func.uniqueFile('tmp.cmds')
+        flob_pf, pFName = DASMC.p4.func.uniqueFile('tmp.cmds')
 
         # Throw the dir and dirname away.
         dirname, dmFName = os.path.split(dmFName_fq)
@@ -375,7 +375,7 @@ class DistanceMatrix:
 
         # This is the result.  The tree, if it exists, is read in by p4.
         oldLen = len(var.trees)
-        p4.func.read(treeFName)
+        DASMC.p4.func.read(treeFName)
         newLen = len(var.trees)
         if newLen == oldLen + 1:
             pass
@@ -410,9 +410,9 @@ class DistanceMatrix:
 
         gm = ["DistanceMatrix.bionj()"]
 
-        flob_dm, dmFName_fq = p4.func.uniqueFile('tmp.dm')
+        flob_dm, dmFName_fq = DASMC.p4.func.uniqueFile('tmp.dm')
         # tempfile.mkstemp(suffix='tree', dir=theDir)
-        flob_tf, treeFName_fq = p4.func.uniqueFile('tmp.tree')
+        flob_tf, treeFName_fq = DASMC.p4.func.uniqueFile('tmp.tree')
         flob_tf.close()
 
         # Throw the dir and dirname away.
@@ -427,7 +427,7 @@ class DistanceMatrix:
 
         # This is the result.  The tree, if it exists, is read in by p4.
         oldLen = len(var.trees)
-        p4.func.read(treeFName)
+        DASMC.p4.func.read(treeFName)
         newLen = len(var.trees)
         if newLen == oldLen + 1:
             pass
@@ -461,9 +461,9 @@ class DistanceMatrix:
 
         gm = ["DistanceMatrix.fastme()"]
 
-        flob_dm, dmFName_fq = p4.func.uniqueFile('tmp.dm')
+        flob_dm, dmFName_fq = DASMC.p4.func.uniqueFile('tmp.dm')
         # tempfile.mkstemp(suffix='tree', dir=theDir)
-        flob_tf, treeFName_fq = p4.func.uniqueFile('tmp.tree')
+        flob_tf, treeFName_fq = DASMC.p4.func.uniqueFile('tmp.tree')
         flob_tf.close()
 
         # Throw the dir and dirname away.
@@ -478,7 +478,7 @@ class DistanceMatrix:
 
         # This is the result.  The tree, if it exists, is read in by p4.
         oldLen = len(var.trees)
-        p4.func.read(treeFName)
+        DASMC.p4.func.read(treeFName)
         newLen = len(var.trees)
         if newLen == oldLen + 1:
             pass

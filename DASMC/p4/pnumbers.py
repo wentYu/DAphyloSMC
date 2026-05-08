@@ -2,9 +2,9 @@ import os
 import sys
 import math
 import string
-import p4.func
-from p4.p4exceptions import P4Error
-from p4.var import var
+import DASMC.p4.func
+from DASMC.p4.p4exceptions import P4Error
+from DASMC.p4.var import var
 import numpy
 
 
@@ -357,7 +357,7 @@ class Numbers(object):
         Supply *theStat*, ie the test quantity, and it uses
         ``self.data`` to make the distribution.
         """
-        return p4.func.tailAreaProbability(theStat, self.data, verbose)
+        return DASMC.p4.func.tailAreaProbability(theStat, self.data, verbose)
 
     # def mplPlot(self):
     #     """Plot with mathplotlib.  Does this work?"""
@@ -381,7 +381,7 @@ class Numbers(object):
             a = numpy.array(self.data, dtype=numpy.double)
             m = numpy.zeros([1], dtype=numpy.double)
             v = numpy.zeros([1], dtype=numpy.double)
-            p4.func.gsl_meanVariance(a, m, v)
+            DASMC.p4.func.gsl_meanVariance(a, m, v)
             return (m, v)
         else:
             return None

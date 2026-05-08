@@ -150,27 +150,27 @@ dasmc-run -d primates -m test1 -n 500 -g 0 -p 0.02 -s 1 -a 0.999
 
 ### Common arguments for `dasmc-run`
 
-| Argument                      | Description                                                                     | Default  |
-|-------------------------------|---------------------------------------------------------------------------------|----------|
-| `--feature`, `-f`             | Pilot run (1) or formal run (0).                                                | 0        |
-| `--dataset`, `-d`             | Base name (without `.nex` extension) of the input file.                          | (required) |
-| `--mark`, `-m`                | Identifier for this set of works.                                               | (required) |
-| `--turn`, `-t`                | Which turn in the repeated run (if any).                                        | 0        |
-| `--random_seed`, `-r`         | Random seed (0 = use default seeds).                                            | 0        |
-| `--gtr`, `-g`                 | Use model SYM/GTR (1) or JC69/K2P (0).                                          | 0        |
-| `--proposal_kappa_prob`, `-p` | Probability of evolution rate parameters proposal (set to 0 if using JC69).     | 0.02     |
+| Argument                      | Description                                                                       | Default  |
+|-------------------------------|-----------------------------------------------------------------------------------|----------|
+| `--feature`, `-f`             | Pilot run (1) or formal DA-SMC run (0).                                           | 0        |
+| `--dataset`, `-d`             | Exact base name (without `.nex` extension) of the input file.                     | (required) |
+| `--mark`, `-m`                | Identifier for this set of works.                                                 | (required) |
+| `--turn`, `-t`                | Which turn in the repeated run (Optional, usually used in formal DA-SMC, not pilot run).                                          | 0        |
+| `--random_seed`, `-r`         | Random seed (0 = use default seeds).                                              | 0        |
+| `--gtr`, `-g`                 | Use model SYM/GTR (1) or JC69/K2P (0).                                            | 0        |
+| `--proposal_kappa_prob`, `-p` | Probability of evolution rate parameters proposal (set to 0 if using JC69).       | 0.02     |
 | `--proposal_pi_prob`, `-pp`   | Probability of base frequency parameters proposal (set to 0 if **not** using GTR). | 0        |
-| `--kappa`, `-k`               | Initial kappa (if **not** using GTR).                                           | 1.0      |
-| `--brlen-prob`, `-b`          | Ratio of branch length proposal and topology proposal.                          | 0.5      |
-| `--prior-lambda`, `-p`        | Branch length exponential prior lambda.                                         | 10.0     |
-| `--etbrPExt`, `-e`            | eSPR extend probability. (Named after `p4`'s eTBR; same meaning in eSPR.)       | 0.6      |
-| `--self_adaptive`, `-s`       | Use self‑adaptive SMC.                                                          | False    |
-| `--alpha`, `-a`               | Self‑adaptive SMC temperature controller alpha (if self‑adaptive).              | 0.999    |
-| `--nParticles`, `-n`          | Number of particles in one iteration.                                           | (int)    |
-| `--iterations`, `-i`          | Total iterations (if not self‑adaptive).                                        | (int)    |
-| `--K`, `-K`                   | First rejection threshold K.                                                    | (float)  |
-| `--delta`, `-del`             | Likelihood tuning bias δ.                                                       | (float)  |
-| `--parallel_cores`, `-pc`     | Cores used for parallelization.                                                 | 1        |
+| `--kappa`, `-k`               | Initial kappa (if **not** using GTR).                                             | 1.0      |
+| `--brlen-prob`, `-b`          | Ratio of branch length proposal and topology proposal.                            | 0.5      |
+| `--prior-lambda`, `-p`        | Branch length exponential prior lambda.                                           | 10.0     |
+| `--etbrPExt`, `-e`            | eSPR extend probability. (Named after `p4`'s eTBR; same meaning in eSPR.)         | 0.6      |
+| `--self_adaptive`, `-s`       | Use self‑adaptive SMC.                                                            | False    |
+| `--alpha`, `-a`               | Self‑adaptive SMC temperature controller alpha (if self‑adaptive).                | 0.999    |
+| `--nParticles`, `-n`          | Number of particles in one iteration.                                             | (int)    |
+| `--iterations`, `-i`          | Total iterations (if not self‑adaptive).                                          | (int)    |
+| `--K`, `-K`                   | First rejection threshold K.                                                      | (float)  |
+| `--delta`, `-del`             | Likelihood tuning bias δ.                                                         | (float)  |
+| `--parallel_cores`, `-pc`     | Cores used for parallelization.                                                   | 1        |
 
 For a complete list of all parameters, including those for advanced use cases or under development, please see the inline documentation in the source code file `DASMC/SMC.py`.
 ### Arguments for `dasmc-train`
@@ -200,7 +200,6 @@ DAphyloSMC requires Python 3.8 or later. Key dependencies include:
 | `scikit-learn` | 0.24.0 |
 | `ete3` | 3.0.0 |
 | `Dendropy` | 4.5.0 |
-| `psutil` | 5.8.0 |
 | `joblib` | 1.0.0 |
 | `sumt` | 3.8.0 |
 

@@ -1,9 +1,9 @@
 # This is STMcmc, for super tree mcmc.
 # Started 18 March 2011, first commit 22 March 2011.
 
-import p4.pf as pf
-import p4.func
-from p4.var import var
+import DASMC.p4.pf as pf
+import DASMC.p4.func
+from DASMC.p4.var import var
 import math
 import random
 import string
@@ -14,10 +14,10 @@ import os
 import pickle
 import glob
 import numpy as np
-from p4.p4exceptions import P4Error
-from p4.treepartitions import TreePartitions
-from p4.constraints import Constraints
-from p4.tree import Tree
+from DASMC.p4.p4exceptions import P4Error
+from DASMC.p4.treepartitions import TreePartitions
+from DASMC.p4.constraints import Constraints
+from DASMC.p4.tree import Tree
 import datetime
 import itertools
 from scipy.optimize import minimize
@@ -129,11 +129,11 @@ if 0:  # test bitReduce
     lLen = 5
     sLen = 4
     allOnes = 15
-    print("     sk: %3i  %s" % (sk, p4.func.getSplitStringFromKey(sk, lLen)))
-    print("taxBits: %3i  %s" % (txBits, p4.func.getSplitStringFromKey(txBits, lLen)))
+    print("     sk: %3i  %s" % (sk, DASMC.p4.func.getSplitStringFromKey(sk, lLen)))
+    print("taxBits: %3i  %s" % (txBits, DASMC.p4.func.getSplitStringFromKey(txBits, lLen)))
 
     rsk, popcount = bitReduce(sk, txBits, lLen, sLen, allOnes)
-    print("    rsk: %3i  %s" % (rsk, p4.func.getSplitStringFromKey(rsk, sLen)))
+    print("    rsk: %3i  %s" % (rsk, DASMC.p4.func.getSplitStringFromKey(rsk, sLen)))
     print("   popcount %i" % popcount)
     #     sk:   6  .**..
     #     taxBits:  30  .****
@@ -146,20 +146,20 @@ def maskedSymmetricDifference(skk, skSet, taxBits, longLen, shortLen, allOnes):
         print("-" * 50)
         print("skk (skk_ppy1 from the current supertree)")
         for sk in skk:
-            print(p4.func.getSplitStringFromKey(sk, longLen))
+            print(DASMC.p4.func.getSplitStringFromKey(sk, longLen))
         print("skSet (from input tree)")
         for sk in skSet:
-            print(p4.func.getSplitStringFromKey(sk, shortLen))
-        print("taxBits:", taxBits, p4.func.getSplitStringFromKey(taxBits, longLen))
+            print(DASMC.p4.func.getSplitStringFromKey(sk, shortLen))
+        print("taxBits:", taxBits, DASMC.p4.func.getSplitStringFromKey(taxBits, longLen))
 
     newSkk = []
     for sk in skk:
         reducedSk, popcount = bitReduce(
             sk, taxBits, longLen, shortLen, allOnes)
         if 0:
-            print("taxBits: %s  " % p4.func.getSplitStringFromKey(taxBits, longLen), end=' ')
-            print("%4i %s  " % (sk, p4.func.getSplitStringFromKey(sk, longLen)), end=' ')
-            print("%4i %s  %i" % (reducedSk, p4.func.getSplitStringFromKey(reducedSk, shortLen), popcount))
+            print("taxBits: %s  " % DASMC.p4.func.getSplitStringFromKey(taxBits, longLen), end=' ')
+            print("%4i %s  " % (sk, DASMC.p4.func.getSplitStringFromKey(sk, longLen)), end=' ')
+            print("%4i %s  %i" % (reducedSk, DASMC.p4.func.getSplitStringFromKey(reducedSk, shortLen), popcount))
         if popcount <= 1 or popcount >= (shortLen - 1):
             pass
         else:
@@ -458,7 +458,7 @@ class STChain(object):
 
             if slowCheck:
                 for inb in it.inbb:
-                    splitString = p4.func.getSplitStringFromKey(
+                    splitString = DASMC.p4.func.getSplitStringFromKey(
                         inb.splitKey, it.nTax)
                     print("    %s " % splitString, end=' ')
                     ret = stDupe.nodeForSplitKeyDict.get(inb.splitKey)
@@ -850,7 +850,7 @@ class STChain(object):
         # group randomly.
         nChooseKs = []
         for i in range(2, nChildren):
-            nChooseKs.append(p4.func.nChooseK(nChildren, i))
+            nChooseKs.append(DASMC.p4.func.nChooseK(nChildren, i))
         cumSum = [nChooseKs[0]]
         for i in range(len(nChooseKs))[1:]:
             cumSum.append(nChooseKs[i] + cumSum[i - 1])
@@ -1927,7 +1927,7 @@ class STMcmc(object):
                  checkPointInterval=None, useSplitSupport=False, verbose=True,
                  checkForOutputFiles=True, swapTuner=250):
 
-        import p4.func  # This should not be needed, but it is.  Why?
+        import DASMC.p4.func  # This should not be needed, but it is.  Why?
         #print(p4.func)
         gm = ['STMcmc.__init__()']
 
@@ -2188,7 +2188,7 @@ class STMcmc(object):
 
         self.fspa = None
         if self.modelName == 'SPA' and var.stmcmc_useFastSpa:
-            import p4.fastspa as fastspa
+            import DASMC.p4.fastspa as fastspa
             self.fspa = fastspa.FastSpa(useSplitSupport)
             for tNum, t in enumerate(inTrees):
                 self.fspa.setInTr(tNum, t.nTax, self.nTax, t.baTaxBits.to01(), t.firstTax)
@@ -2266,7 +2266,7 @@ class STMcmc(object):
         if bigT:
             self.tree = bigT
         else:
-            self.tree = p4.func.randomTree(taxNames=self.taxNames, name='stTree', randomBrLens=False)
+            self.tree = DASMC.p4.func.randomTree(taxNames=self.taxNames, name='stTree', randomBrLens=False)
 
         if self.stRFCalc in ['purePython1', 'fastReducedRF']:
             for t in inTrees:
@@ -2289,8 +2289,8 @@ class STMcmc(object):
             self.Frrf = None
             if self.stRFCalc == 'fastReducedRF':
                 try:
-                    import p4.fastReducedRF
-                    self.Frrf = p4.fastReducedRF.Frrf
+                    import DASMC.p4.fastReducedRF
+                    self.Frrf = DASMC.p4.fastReducedRF.Frrf
                     # not explicitly used--but makes converters available
                     import pyublas
                 except ImportError:
@@ -2370,7 +2370,7 @@ class STMcmc(object):
                 raise P4Error(gm)
 
 
-        splash = p4.func.splash2(verbose=False)
+        splash = DASMC.p4.func.splash2(verbose=False)
         for aLine in splash:
             self.logger.info(aLine)
 
@@ -2712,7 +2712,7 @@ class STMcmc(object):
             # nTax-2 inclusive.
             p = self.props.proposalsDict.get('polytomy')
             if p and self.polytomyUseResolutionClassPrior:
-                bigT = p4.func.nUnrootedTreesWithMultifurcations(self.tree.nTax)
+                bigT = DASMC.p4.func.nUnrootedTreesWithMultifurcations(self.tree.nTax)
                 p.logBigT = [0.0] * (self.tree.nTax - 1)
                 for i in range(1, self.tree.nTax - 1):
                     p.logBigT[i] = math.log(bigT[i])
@@ -2730,7 +2730,7 @@ class STMcmc(object):
         treeFile.write('  dimensions ntax=%s;\n' % self.tree.nTax)
         treeFile.write('  taxlabels')
         for tN in self.tree.taxNames:
-            treeFile.write(' %s' % p4.func.nexusFixNameIfQuotesAreNeeded(tN))
+            treeFile.write(' %s' % DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(tN))
         treeFile.write(';\nend;\n\n')
 
         treeFile.write('begin trees;\n')
@@ -2743,9 +2743,9 @@ class STMcmc(object):
         treeFile.write('  translate\n')
         for i in range(self.tree.nTax - 1):
             treeFile.write('    %3i %s,\n' % (
-                i + 1, p4.func.nexusFixNameIfQuotesAreNeeded(self.tree.taxNames[i])))
+                i + 1, DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(self.tree.taxNames[i])))
         treeFile.write('    %3i %s\n' % (
-            self.tree.nTax, p4.func.nexusFixNameIfQuotesAreNeeded(self.tree.taxNames[-1])))
+            self.tree.nTax, DASMC.p4.func.nexusFixNameIfQuotesAreNeeded(self.tree.taxNames[-1])))
         treeFile.write('  ;\n')
         treeFile.write('  [Tree numbers are gen+1]\n')
         treeFile.close()
@@ -3280,7 +3280,7 @@ class STMcmc(object):
                             gm.append(
                                 "The current tree (the last tree sampled) does not contain constraint")
                             gm.append(
-                                "%s" % p4.func.getSplitStringFromKey(sk, self.tree.nTax))
+                                "%s" % DASMC.p4.func.getSplitStringFromKey(sk, self.tree.nTax))
                             raise P4Error(gm)
 
                 # If it is a checkPointInterval, pickle
@@ -3613,7 +3613,7 @@ class STMcmcCheckPointReader(object):
                     f.close()
                     self.mm.append(m)
 
-                self.mm = p4.func.sortListOfObjectsOn2Attributes(
+                self.mm = DASMC.p4.func.sortListOfObjectsOn2Attributes(
                     self.mm, "gen", 'runNum')
         else:
             # get the file by name
@@ -3707,7 +3707,7 @@ class STMcmcCheckPointReader(object):
         diffs = []
         for i in ret:
             # print "            %.3f  %.3f    " % (i[2][0], i[2][1]),
-            stdDev = math.sqrt(p4.func.variance(i[2]))
+            stdDev = math.sqrt(DASMC.p4.func.variance(i[2]))
             # print "%.5f" % stdDev
             sumOfStdDevs += stdDev
             diffs.append(math.fabs(i[2][0] - i[2][1]))

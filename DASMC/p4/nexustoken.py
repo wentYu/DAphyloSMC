@@ -1,8 +1,8 @@
 import os
 import string
 import sys
-from p4.var import var
-from p4.p4exceptions import P4Error
+from DASMC.p4.var import var
+from DASMC.p4.p4exceptions import P4Error
 
 
 ############################################################################

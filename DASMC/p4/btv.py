@@ -4,8 +4,8 @@ import sys
 import random
 import string
 import math
-from p4.tree import Tree
-from p4.p4exceptions import P4Error
+from DASMC.tp4.ree import Tree
+from DASMC.p4.p4exceptions import P4Error
 try:
     from tkinter import *
 except ImportError:

@@ -8,7 +8,7 @@ import warnings
 from itertools import combinations, product
 import operator
 from Bio.Data import CodonTable
-from p4.p4exceptions import P4Error
+from DASMC.p4.p4exceptions import P4Error
 
 def formatwarning(message, category, filename, lineno, line):
     return "%s:%s: %s:%s" % (filename, lineno, category.__name__, message)

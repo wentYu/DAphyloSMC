@@ -3,13 +3,13 @@ import re
 import string
 import os
 import io
-import p4.func
+import DASMC.p4.func
 import copy
-from p4.var import var
-from p4.p4exceptions import P4Error
+from DASMC.p4.var import var
+from DASMC.p4.p4exceptions import P4Error
 from subprocess import Popen, PIPE
 from builtins import object       # For Py2/3 compatibility, needed for redefinition of __bool__() below in Py2
-from p4.sequence import Sequence
+from DASMC.p4.sequence import Sequence
 
 class SequenceList(object):
 
@@ -151,7 +151,7 @@ class SequenceList(object):
 
         # now fix the sequences
         for mySeq in self.sequences:
-            dType = p4.func.isDnaRnaOrProtein(mySeq.sequence)
+            dType = DASMC.p4.func.isDnaRnaOrProtein(mySeq.sequence)
             if dType == 1:
                 # print("Its dna")
                 mySeq.dataType = 'dna'
@@ -417,7 +417,7 @@ class SequenceList(object):
 
         """
 
-        from p4.alignment import Alignment
+        from DASMC.p4.alignment import Alignment
         a = Alignment()
         a.fName = self.fName
         import copy
@@ -668,7 +668,7 @@ class SequenceList(object):
         ret = p.communicate(input=flob.getvalue())
         flob.close()
         try:
-            a = p4.func.readAndPop(ret[0].decode())
+            a = DASMC.p4.func.readAndPop(ret[0].decode())
         except P4Error:
             print(ret)
             raise P4Error("Something didn't work ...")
@@ -701,7 +701,7 @@ class SequenceList(object):
             raise P4Error("clustalo()  Something wrong here ...")
         flob.close()
         #print(ret)      # it is a bytes string
-        a = p4.func.readAndPop(ret[0].decode())
+        a = DASMC.p4.func.readAndPop(ret[0].decode())
         a.makeSequenceForNameDict()
         newSequenceList = []
         for sSelf in self.sequences:
