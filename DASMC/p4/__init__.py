@@ -125,6 +125,6 @@ if 1:
     del(verboseStartupFiles)
     del(sdd)
 
-if var.excepthookEditor:
+if hasattr(var, 'excepthookEditor') and var.excepthookEditor:
     from .interactive import excepthook
 

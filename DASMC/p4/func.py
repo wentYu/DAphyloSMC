@@ -25,7 +25,7 @@ from p4.p4exceptions import P4Error
 # from p4.constraints import Constraints
 import p4.pf as pf
 import numpy
-from p4.pnumbers import Numbers
+# from p4.pnumbers import Numbers
 from p4.nexustoken import nextTok
 
 
