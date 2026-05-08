@@ -10,7 +10,7 @@ In Bayesian phylogenetics, estimating the posterior distribution over tree space
 
 The package extracts over 35 topological and branch‑length features from tree proposals (e.g., eSPR, stNNI) and uses a random forest to predict the likelihood change. This surrogate enables a delayed‑acceptance MCMC kernel that pre‑filters costly likelihood evaluations, substantially reducing computational time while maintaining robust posterior estimates.
 
-DAphyloSMC seamlessly integrates this kernel into an SMC sampler, providing an efficient, off‑the‑shelf tool for Bayesian phylogenetics on large‑scale sequence data.
+DAphyloSMC seamlessly integrates this delayed‑acceptance MCMC kernel into an SMC sampler, providing an efficient, off‑the‑shelf tool for Bayesian phylogenetics on large‑scale sequence data.
 
 [//]: # (For a detailed description of the methodology, including feature design, the delayed‑acceptance kernel, and validation results, please refer to our paper: [Your Citation or DOI] &#40;available at [journal URL or arXiv]&#41;.)
 
