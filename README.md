@@ -1,4 +1,4 @@
-# DAphyloSMC – Data Analysis Workflow for phylogenetic Bayesian Inference
+# DAphyloSMC – A delayed‑acceptance sequential Monte Carlo for phylogenetic Bayesian Inference
 
 [//]: # ([![PyPI version]&#40;https://badge.fury.io/py/DASMC.svg&#41;]&#40;https://pypi.org/project/DASMC/&#41;)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
@@ -233,8 +233,8 @@ The complete license text is available in the `LICENSE` file in the root directo
 
 If you use DAphyloSMC in your research, please cite:
 
-> Wentao Yu, et al. (2026). A delayed acceptance sequential Monte Carlo with random
-forests for Bayesian phylogenetic inference https://github.com/wentYu/DAphyloSMC
+> W.Yu, S.Wang (2026). A delayed acceptance sequential Monte Carlo with random
+forests for Bayesian phylogenetic inference.
 
 ## Contact
 For questions, bug reports, or suggestions, please [open an issue](https://github.com/wentYu/DAphyloSMC/issues) on GitHub.
