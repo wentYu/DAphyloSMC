@@ -354,7 +354,7 @@ def propose(args):
                 new_kappa = kappa * np.exp(rand)
             else:
                 with warnings.catch_warnings(record=True) as w:
-                    warnings.simplefilter("always")  # 捕获所有警告
+                    warnings.simplefilter("always")
                     new_kappa, log_proposal_ratio = dirichlet_proposal_compact(kappa, alpha=eps)
 
                     if w:
@@ -621,7 +621,7 @@ def calculate(args):
             log_ref_ratio_with_exp = 0
 
         with warnings.catch_warnings(record=True) as w:
-            warnings.simplefilter("always")  # 捕获所有警告
+            warnings.simplefilter("always")
             if this_sur_log_likelihood_ratio == np.inf:
                 our_ratio_1 = np.inf
             else:
