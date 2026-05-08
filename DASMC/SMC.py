@@ -1943,8 +1943,10 @@ def SMC(kappa, alpha, base_frequency, prior_lambda=10, etbrPExt=0.6, proposal_ka
         print(f'FP check count: {FP_check_count}')
     sumt_command = '--con --biplen -i ' + newick_path + ' -n -q --informat newick'
     sumt.main(sumt_command.split())
-
-    os.rename(newick_path[15:-7] + '.con', newick_path[:-7] + '.con')
+    try:
+        os.rename(newick_path[15:-7] + '.con', newick_path[:-7] + '.con')
+    except Exception as e:
+        e=0
     sumt_newick = ''
     with open(newick_path[:-7] + '.con', 'r') as f:
         for one in re.split(string=f.readlines()[3].split('= ')[-1], pattern=r'\[[^]]+\]'):
