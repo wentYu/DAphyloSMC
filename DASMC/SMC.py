@@ -1795,7 +1795,7 @@ def SMC(kappa, alpha, base_frequency, prior_lambda=10, etbrPExt=0.6, proposal_ka
             rESS = 1 / (nParticles * np.sum(np.square(normalized_weight_list)))
             if rESS < epislon:
 
-                print('at iteration {}, resampling happens.'.format(iteration))
+                # print('at iteration {}, resampling happens.'.format(iteration))
                 resample_list.append(iteration)
 
                 if use_residual_weight_sum:
