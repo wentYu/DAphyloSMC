@@ -287,7 +287,7 @@ def save_posterior_para_distribution(log_likelihood_list, tree_length_list, base
 
 def propose(args):
     (rand, rand2, mcmc, kappa, base_frequency, chain, proposal_kappa_prob, proposal_pi_prob,
-     gtr, prior_lambda, etbrPExt, eps, bps, iteration, k) = args
+     gtr, prior_lambda, etbrPExt, sps, bps, iteration, k) = args
 
     feature = [0 for i in range(37)]
     log_proposal_ratio = None
@@ -353,7 +353,7 @@ def propose(args):
             else:
                 with warnings.catch_warnings(record=True) as w:
                     warnings.simplefilter("always")
-                    new_kappa, log_proposal_ratio = dirichlet_proposal_compact(kappa, alpha=eps)
+                    new_kappa, log_proposal_ratio = dirichlet_proposal_compact(kappa, alpha=sps)
 
                     if w:
                         warn = False
@@ -754,7 +754,7 @@ def SMC(kappa, alpha, base_frequency, prior_lambda=10, etbrPExt=0.6, proposal_ka
         brLen_prob=0.5,
         nParticles=50, iterations=20000, dataset='primates', mark='0', feature=0, output_feature=0, output_vector=0,
         self_adaptive=1,
-        K=-50, delta=5, check=0, reference=0, pilotRF=0.0, turn=0, gtr=0, ga=0, eps=50.0, bps=50.0, use_P_Q_dict=1,
+        K=-50, delta=5, check=0, reference=0, pilotRF=0.0, turn=0, gtr=0, ga=0, sps=50.0, bps=50.0, use_P_Q_dict=1,
         reference_bound=1.0,
         nFP=0, Final_Resample=0, random_seed=0, duplicate_iterations=1, pool=None,pc=1):
     print('\nsettings:')
@@ -778,7 +778,7 @@ def SMC(kappa, alpha, base_frequency, prior_lambda=10, etbrPExt=0.6, proposal_ka
         if proposal_kappa_prob > 0:
             print('use informative prior: ', bool(ga))
     else:
-        print('evolution rate parameters Direchlet proposal sharpness: ', eps)
+        print('substitution rate parameters Direchlet proposal sharpness: ', sps)
     print('base frequency parameters Direchlet proposal sharpness: ', bps)
     print('ratio of branch length proposal and any topology proposal: ', brLen_prob)
 
@@ -1177,7 +1177,7 @@ def SMC(kappa, alpha, base_frequency, prior_lambda=10, etbrPExt=0.6, proposal_ka
                 # rand2_list = [Pi_gen.random() for _ in range(nParticles)]
                 # # for k in range(nParticles):
                 # data=[(rand_list[k],rand2_list[k],mcmc_list[k],kappa_list[k],base_frequency_list[k],chain_list[k],proposal_kappa_prob, proposal_pi_prob,
-                #  gtr, prior_lambda, etbrPExt, eps, bps, iteration, k) for k in range(nParticles)]
+                #  gtr, prior_lambda, etbrPExt, sps, bps, iteration, k) for k in range(nParticles)]
                 #
                 # res=propose_parallel(pool,data)
                 # for k,r in enumerate(res):
@@ -1279,7 +1279,7 @@ def SMC(kappa, alpha, base_frequency, prior_lambda=10, etbrPExt=0.6, proposal_ka
                             else:
                                 with warnings.catch_warnings(record=True) as w:
                                     warnings.simplefilter("always")
-                                    new_kappa, log_proposal_ratio = dirichlet_proposal_compact(kappa_list[k], alpha=eps)
+                                    new_kappa, log_proposal_ratio = dirichlet_proposal_compact(kappa_list[k], alpha=sps)
 
                                     if w:
                                         warn = False
@@ -1604,7 +1604,7 @@ def SMC(kappa, alpha, base_frequency, prior_lambda=10, etbrPExt=0.6, proposal_ka
                                 rand = scipy.stats.norm.rvs(loc=0, scale=0.2, size=1)[0]
                                 new_kappa = kappa_list[k] * np.exp(rand)
                             else:
-                                new_kappa, log_proposal_ratio = dirichlet_proposal_compact(kappa_list[k], alpha=eps)
+                                new_kappa, log_proposal_ratio = dirichlet_proposal_compact(kappa_list[k], alpha=sps)
                             new_base_frequency = base_frequency_list[k]
                         else:
                             proposal_list.append('Pi')
@@ -2040,7 +2040,7 @@ def main():
     parser.add_argument('-t', '--turn', default=0)
     parser.add_argument('-g', '--gtr', default=0)
     parser.add_argument('-ga', '--gamma', default=0)
-    parser.add_argument('-eps', '--evolution_rate_proposal_sharpness', default=200)
+    parser.add_argument('-sps', '--substitution_rate_proposal_sharpness', default=200)
     parser.add_argument('-bps', '--base_frequency_proposal_sharpness', default=100)
     parser.add_argument('-upq', '--use_P_Q_dict', default=1)
     parser.add_argument('-rb', '--reference_bound', default=1.0)
@@ -2095,7 +2095,7 @@ def main():
             feature=feature, output_feature=int(args.output_feature), output_vector=int(args.output_vector),
             self_adaptive=int(args.self_adaptive), K=float(args.K), delta=float(args.delta), check=check,
             reference=int(args.reference), pilotRF=float(args.pilotRF), turn=turn, gtr=gtr, ga=int(args.gamma),
-            eps=float(args.evolution_rate_proposal_sharpness), bps=float(args.base_frequency_proposal_sharpness),
+            sps=float(args.evolution_rate_proposal_sharpness), bps=float(args.base_frequency_proposal_sharpness),
             use_P_Q_dict=int(args.use_P_Q_dict), reference_bound=float(args.reference_bound),
             nFP=int(args.no_False_Positive),
             Final_Resample=int(args.Final_Resample), duplicate_iterations=int(args.duplicate_iterations), pool=pool,pc=pc)
