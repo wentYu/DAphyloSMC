@@ -30,7 +30,7 @@ For a detailed description of the methodology, please refer to our preprint (arX
 - [Dependencies](#dependencies)
 - [Included Modified Packages](#included-modified-packages)
 - [License](#license)
-- [Citation](#citation)
+- [Citation](#citation-temporary)
 - [Contact](#Contact)
 ## Installation
 
