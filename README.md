@@ -155,12 +155,12 @@ dasmc-run -d primates -m test1 -n 500 -g 0 -p 0.02 -s 1 -a 0.999
 | `--feature`, `-f`             | Pilot run (1) or formal DA-SMC run (0).                                           | 0        |
 | `--dataset`, `-d`             | Exact base name (without `.nex` extension) of the input file.                     | (required) |
 | `--mark`, `-m`                | Identifier for this set of works.                                                 | (required) |
-| `--turn`, `-t`                | Which turn in the repeated run (Optional, usually used in formal DA-SMC, not pilot run).                                          | 0        |
+| `--turn`, `-t`                | Which turn in the repeated run (Optional, usually used in formal DA-SMC, not pilot run). | 0        |
 | `--random_seed`, `-r`         | Random seed (0 = use default seeds).                                              | 0        |
 | `--gtr`, `-g`                 | Use model SYM/GTR (1) or JC69/K2P (0).                                            | 0        |
 | `--proposal_kappa_prob`, `-p` | Probability of evolution rate parameters proposal (set to 0 if using JC69).       | 0.02     |
 | `--proposal_pi_prob`, `-pp`   | Probability of base frequency parameters proposal (set to 0 if **not** using GTR). | 0        |
-| `--kappa`, `-k`               | Initial kappa (if **not** using GTR).                                             | 1.0      |
+| `--kappa`, `-k`               | Initial kappa (if **not** using SYM/GTR).                                         | 1.0      |
 | `--brlen-prob`, `-b`          | Ratio of branch length proposal and topology proposal.                            | 0.5      |
 | `--prior-lambda`, `-p`        | Branch length exponential prior lambda.                                           | 10.0     |
 | `--etbrPExt`, `-e`            | eSPR extend probability. (Named after `p4`'s eTBR; same meaning in eSPR.)         | 0.6      |
