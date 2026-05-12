@@ -12,7 +12,7 @@ The package extracts over 35 topological and branch‑length features from tree 
 
 DAphyloSMC seamlessly integrates this delayed‑acceptance MCMC kernel into an SMC sampler, providing an efficient, off‑the‑shelf tool for Bayesian phylogenetics on large‑scale sequence data.
 
-For a detailed description of the methodology, please refer to our preprint (arXiv: pending).
+For a detailed description of the methodology, please refer to our preprint (https://arxiv.org/abs/2605.09506).
 
 ## Table of Contents
 
@@ -228,8 +228,12 @@ The complete license text is available in the `LICENSE` file in the root directo
 
 > **Note:** This package includes a modified version of the `p4` library. For details, see [Included Modified Packages](#included-modified-packages).
 
-## Citation (temporary)
-A preprint describing this work is currently under review. Please check back later or contact the authors for the proper citation format.
+## Citation
+
+If you use DAphyloSMC in your research, please cite:
+
+> W. Yu, S. Wang (2026). Accelerating Bayesian Phylogenetic Inference via Delayed
+Acceptance Sequential Monte Carlo with Random Forest Surrogates. (https://arxiv.org/abs/2605.09506)
 
 ## Contact
 For questions, bug reports, or suggestions, please [open an issue](https://github.com/wentYu/DAphyloSMC/issues) on GitHub.
