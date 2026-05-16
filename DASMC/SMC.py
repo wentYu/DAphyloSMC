@@ -164,96 +164,6 @@ def dirichlet_proposal_compact(current, alpha=50.0):
 
     return y.tolist(), new_log_q_rev_log_q_fwd
 
-def read_nex_con_tre_file(dataset, mark, taxon_namespace, ts, d, gtr, primates_ref=False):
-    taxa_labels = []
-    if not primates_ref:
-        if gtr:
-            try:
-                with open('./' + dataset + '/' + dataset + '_GTR.nex.con.tre', 'r') as f:
-                    lines = f.readlines()
-            except Exception as e:
-                with open('./' + dataset + '/' + dataset + '.nex.con.tre', 'r') as f:
-                    lines = f.readlines()
-        else:
-            with open('./' + dataset + '/' + dataset + '.nex.con.tre', 'r') as f:
-                lines = f.readlines()
-    else:
-        if gtr:
-            try:
-                with open('./primates/primates_ref_GTR.nex.con.tre', 'r') as f:
-                    lines = f.readlines()
-            except Exception as e:
-                with open('./primates/primates_ref.nex.con.tre', 'r') as f:
-                    lines = f.readlines()
-        else:
-            with open('./primates/primates_ref.nex.con.tre', 'r') as f:
-                lines = f.readlines()
-    translate = {}
-    i = 0
-    for line in lines[-3 - len(d.taxNames):-4]:
-        i += 1
-        translate[str(i)] = line[4:-2].strip()
-        taxa_labels.append(line[4:-2].strip())
-    i += 1
-    translate[str(i)] = lines[-4][4:-1].strip()
-    taxa_labels.append(lines[-4][4:-1].strip())
-    origin_mrbayes_newick = lines[-2][lines[-2].find('('):]
-
-    dendro_mb = dendropy.Tree.get(
-        data=origin_mrbayes_newick,
-        schema="newick",
-        preserve_underscores=True,
-        taxon_namespace=dendropy.TaxonNamespace()
-    )
-
-    def convert_node(dendro_node, ete_parent=None):
-        name = dendro_node.taxon.label if dendro_node.taxon else ""
-        ete_node = Tree(name=name)
-
-        prob_str = dendro_node.annotations.get_value('prob', None)
-        if prob_str is not None:
-            try:
-                prob = float(prob_str)
-                ete_node.add_feature("prob", prob)
-                ete_node.support = prob
-            except ValueError:
-                pass
-
-        if dendro_node.edge_length is not None:
-            ete_node.dist = dendro_node.edge_length
-
-        if ete_parent:
-            ete_parent.add_child(ete_node)
-
-        for child in dendro_node.child_nodes():
-            convert_node(child, ete_node)
-        return ete_node
-
-    root = dendro_mb.seed_node
-    ete_mb = convert_node(root)
-    ete_mb.dist = 0
-
-    for one in ete_mb.get_leaves():
-        one.name = translate[one.name]
-    try:
-        ete_mb.sort_descendants()
-    except Exception as e:
-        e = 0
-
-    ete_mb.render("./phylogenetic_tree_mb_" + dataset + "_" + mark + ".png", w=800, tree_style=ts)
-
-    try:
-        os.remove('./ete2dendropy_' + dataset + '_' + mark + '.newick')
-    except Exception as e:
-        e = 0
-    ete_mb.write(outfile='ete2dendropy_' + dataset + '_' + mark + '.newick')
-
-    mrbayes_dendro_consensus = dendropy.Tree.get_from_path('ete2dendropy_' + dataset + '_mark' + mark + '.newick',
-                                                           'newick', taxon_namespace=taxon_namespace)
-    mrbayes_ete_consensus = Tree('ete2dendropy_' + dataset + '_' + mark + '.newick')
-    return mrbayes_ete_consensus, mrbayes_dendro_consensus
-
-
 def save_posterior_para_distribution(log_likelihood_list, tree_length_list, base_frequency_list, kappa_list, dataset,
                                      mark, turn, gtr):
     param_names = [
@@ -763,7 +673,7 @@ def SMC(kappa, alpha, base_frequency, prior_lambda=10, etbrPExt=0.6, proposal_ka
     print('a pilot run or a formal DA-SMC run (1 for pilot run)? ', feature)
     if feature:
         print('need to output the features? ', bool(output_feature))
-    print('run on which dataset (your input file should be exactly "dataset.nex"): ', dataset)
+    print('run on which dataset (your input file should be exactly "dataset.nex" or "dataset.phy"): ', dataset)
     print('identifier for this set of works: ', mark)
     print('which turn is it in the repeated run (Optional, usually used in formal DA-SMC, not pilot run)? ', turn)
     print('random seed (0 means using default seeds): ', random_seed)
@@ -831,7 +741,13 @@ def SMC(kappa, alpha, base_frequency, prior_lambda=10, etbrPExt=0.6, proposal_ka
     else:
         gamma = None
     p4.var.doCheckForAllGapColumns = False
-    p4.read('./data/' + dataset + '.nex')
+    try:
+        p4.read('./data/' + dataset + '.nex')
+    except Exception as e:
+        try:
+            p4.read('./data/' + dataset + '.phy')
+        except Exception as e:
+            raise RuntimeError('Can not find the corresponding file, put your .nex or .phy file in ./data please.')
 
     d = p4.Data()
     a = d.alignments[0]
