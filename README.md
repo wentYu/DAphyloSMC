@@ -92,9 +92,9 @@ If you see no error messages and the output shows the path to p4 (inside your si
 
 ## Preparing the data
 
-DAphyloSMC requires input files in **Nexus format** (extension `.nex`). Place your `.nex` file(s) inside a subdirectory named `data/` under your current working directory. 
+DAphyloSMC requires input files in **Nexus format** (extension `.nex`) or **Phylip format** (extension `.phy`). Place your `.nex` or `.phy` file(s) inside a subdirectory named `data/` under your current working directory. 
 
-If you have cloned the DAphyloSMC GitHub repository, a sample dataset `primates.nex` is already provided in the `data/` directory. To use this sample, simply run DAphyloSMC commands from the repository root. For your own datasets, simply create the `data/` directory and put your `.nex` file(s) there.
+If you have cloned the DAphyloSMC GitHub repository, a sample dataset `primates.nex` is already provided in the `data/` directory. To use this sample, simply run DAphyloSMC commands from the repository root. For your own datasets, simply create the `data/` directory and put your file(s) there.
 ## Usage
 
 DAphyloSMC provides two command-line tools: `dasmc-run` (for SMC sampling) and `dasmc-train` (for training the random forest classifier). The typical workflow consists of three consecutive steps.
@@ -110,7 +110,7 @@ dasmc-run -f 1 -d primates -m test1 -n 50 -i 200 -g 0 -p 0.02
 **Key arguments:**
 
 - `-f 1` : Pilot run (feature collection mode).  
-- `-d primates` : Dataset name. The input file must be named `primates.nex`.  
+- `-d primates` : Dataset name. The input file must be named `primates.nex` or `primates.phy`.  
 - `-m test1` : Identifier for this set of works.  
 - `-n 50` : Number of particles (use a small value for pilot).  
 - `-i 200` : Number of SMC iterations (use a small value for pilot).  
@@ -153,7 +153,7 @@ dasmc-run -d primates -m test1 -n 500 -g 0 -p 0.02 -s 1 -a 0.999
 | Argument                      | Description                                                                       | Default  |
 |-------------------------------|-----------------------------------------------------------------------------------|----------|
 | `--feature`, `-f`             | Pilot run (1) or formal DA-SMC run (0).                                           | 0        |
-| `--dataset`, `-d`             | Exact base name (without `.nex` extension) of the input file.                     | (required) |
+| `--dataset`, `-d`             | Exact base name (without `.nex` or `.phy` extension) of the input file.            | (required) |
 | `--mark`, `-m`                | Identifier for this set of works.                                                 | (required) |
 | `--turn`, `-t`                | Which turn in the repeated run (Optional, usually used in formal DA-SMC, not pilot run). | 0        |
 | `--random_seed`, `-r`         | Random seed (0 = use default seeds).                                              | 0        |
