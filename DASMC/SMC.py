@@ -2011,7 +2011,7 @@ def main():
             feature=feature, output_feature=int(args.output_feature), output_vector=int(args.output_vector),
             self_adaptive=int(args.self_adaptive), K=float(args.K), delta=float(args.delta), check=check,
             reference=int(args.reference), pilotRF=float(args.pilotRF), turn=turn, gtr=gtr, ga=int(args.gamma),
-            sps=float(args.evolution_rate_proposal_sharpness), bps=float(args.base_frequency_proposal_sharpness),
+            sps=float(args.substitution_rate_proposal_sharpness), bps=float(args.base_frequency_proposal_sharpness),
             use_P_Q_dict=int(args.use_P_Q_dict), reference_bound=float(args.reference_bound),
             nFP=int(args.no_False_Positive),
             Final_Resample=int(args.Final_Resample), duplicate_iterations=int(args.duplicate_iterations), pool=pool,pc=pc)
